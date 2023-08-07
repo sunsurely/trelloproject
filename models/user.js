@@ -4,40 +4,31 @@ class User extends Sequelize.Model {
   static initiate(sequelize) {
     User.init(
       {
-        name: {
-          type: Sequelize.STRING(15),
+        userId: {
+          type: Sequelize.INTEGER,
+          primaryKey: true,
+          allowNull: false,
+          autoIncrement: true,
+        },
+        boardId: {
+          type: Sequelize.INTEGER,
           allowNull: false,
         },
-        email: {
-          type: Sequelize.STRING(40),
-          allowNull: true,
-          unique: true,
-        },
-        password: {
+        name: {
           type: Sequelize.STRING(100),
           allowNull: true,
         },
-        phoneNumber: {
+        email: {
           type: Sequelize.STRING(15),
           allowNull: false,
-          unique: true
+          unique: true,
         },
-        nickname: {
+        content: {
           type: Sequelize.STRING(20),
-          allowNull: false,
-          unique:true
+          allowNull: true,
         },
-        isAdmin: {
-          type: Sequelize.BOOLEAN,
-          allowNull: false,
-        },
-        point: {
-          type: Sequelize.INTEGER,
-          defaultValue: 1000000,
-          allowNull: false,
-        },
-        location: {
-          type: Sequelize.STRING(10),
+        password: {
+          type: Sequelize.STRING,
           allowNull: false,
         },
       },
@@ -50,15 +41,13 @@ class User extends Sequelize.Model {
         paranoid: true,
         charset: 'utf8',
         collate: 'utf8_general_ci',
-      }
+      },
     );
   }
 
   static associate(db) {
-    db.User.hasMany(db.Order, { foreignKey: 'userId', sourceKey: 'id' });
-    db.User.hasMany(db.Review, { foreignKey: 'userId', sourceKey: 'id' });
-    db.User.hasOne(db.Store, { foreignKey: 'ownerId', targetKey: 'id' });
-    db.Store.belongsTo(db.User, { foreignKey: 'id', targetKey: 'ownerId' });
+    db.User.hasMany(db.Board, { foreignKey: 'userId', sourceKey: 'userId' });
+    db.User.hasMany(db.Comment, { foreignKey: 'userId', sourceKey: 'userId' });
   }
 }
 
