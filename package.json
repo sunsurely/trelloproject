@@ -13,9 +13,6 @@
   },
   "author": "root",
   "license": "ISC",
-  "bugs": {
-    "url": ""
-  },
   "homepage": "",
   "dependencies": {
     "bcrypt": "^5.1.0",
