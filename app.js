@@ -12,7 +12,7 @@ const { sequelize } = require('./models');
 app.set('port', process.env.PORT || 3000);
 
 sequelize
-  .sync({ force: true })
+  .sync({ force: false })
   .then(() => {
     console.log('데이터베이스 연결 성공');
   })
@@ -20,14 +20,14 @@ sequelize
     console.error(err);
   });
 
-// app.use(morgan('dev'));
-// app.use(cors({ origin: true, credentials: true }));
-// app.use(express.json());
-// app.use(express.urlencoded({ extended: false }));
-// app.use(cookieParser(process.env.COOKIE_SECRET));
+app.use(morgan('dev'));
+app.use(cors({ origin: true, credentials: true }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser(process.env.COOKIE_SECRET));
 // // app.get("/", "?????");
 // app.use(express.static(path.join(__dirname, '')));
-// app.use('/api', mainRouter);
+app.use('/api', mainRouter);
 
 // app.use((req, res, next) => {
 //   const error = new Error(`${req.method} ${req.url} 라우터가 없습니다.`);

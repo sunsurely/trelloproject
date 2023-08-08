@@ -26,6 +26,10 @@ class Card extends Sequelize.Model {
           type: Sequelize.DATE,
           allowNull: true,
         },
+        manager: {
+          type: Sequelize.STRING,
+          allowNull: true,
+        },
       },
       {
         sequelize,

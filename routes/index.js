@@ -1,18 +1,21 @@
-// const express = require('express');
-// const router = express.Router();
+const express = require('express');
+const router = express.Router();
+const cardRouter = require('./card.router');
+const commentRouter = require('./comment.router');
 
-// const authRouter = require('./auth.router');
-// // const userRouter = require('./user.router');
-// // const storeRouter = require('./store.router');
-// const menuRouter = require('./menu.router');
-// // const orderRouter = require('./order.router');
-// // const reviewRouter = require('./review.router');
+const defaultRoutes = [
+  {
+    path: '/boards',
+    route: cardRouter,
+  },
+  {
+    path: '/boards',
+    route: commentRouter,
+  },
+];
 
-// router.use('/', authRouter); //로그인 동현님
-// // router.use('/users', userRouter); // 두혁님
-// // router.use('/stores', storeRouter); // 형진님
-// router.use('/stores', menuRouter); // 동현님
-// // router.use('/stores', orderRouter); // 현진
-// // router.use('/reviews', reviewRouter); // 보류
+defaultRoutes.forEach((route) => {
+  router.use(route.path, route.route);
+});
 
-// module.exports = router;
+module.exports = router;
