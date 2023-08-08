@@ -7,4 +7,7 @@ const columnController = new ColumnController();
 // 컬럼 추가
 router.post('/:boardId/column', columnController.createColumn);
 
+// 컬럼 조회
+router.get('/:boardId/column', columnController.getAllColumns);
+
 module.exports = router;
