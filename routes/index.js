@@ -1,7 +1,9 @@
 const express = require('express');
 const router = express.Router();
+
 const cardRouter = require('./card.router');
 const commentRouter = require('./comment.router');
+const columnRouter = require('./column.router.js');
 
 const defaultRoutes = [
   {
@@ -11,6 +13,10 @@ const defaultRoutes = [
   {
     path: '/boards',
     route: commentRouter,
+  },
+  {
+    path: '/boards',
+    route: columnRouter,
   },
 ];
 
