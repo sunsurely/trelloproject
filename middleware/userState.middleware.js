@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 
 exports.authorizated = async (req, res, next) => {
-  const { authorization } = req.cookies;
+  const { authorization } = req.headers;
 
   if (!authorization) {
     return res.status(403).json({ errorMessage: '권한이 존재하지 않습니다.' });
@@ -24,7 +24,7 @@ exports.authorizated = async (req, res, next) => {
 };
 
 exports.isLoggedIn = async (req, res, next) => {
-  const { authorization } = req.cookies;
+  const { authorization } = req.headers;
 
   if (!authorization) {
     res.locals.isLoggedIn = false;
@@ -34,15 +34,21 @@ exports.isLoggedIn = async (req, res, next) => {
 
   const [authType, authToken] = (authorization ?? '').split(' ');
 
-  const { user } = jwt.verify(authToken, process.env.COOKIE_SECRET);
   if (!authorization || authType !== 'Bearer' || !authToken) {
     res.locals.isLoggedIn = false;
     next();
     return;
   }
 
-  res.locals.isLoggedIn = true;
-  res.locals.user_id = user.user_id;
-  res.locals.status = user.status;
-  next();
+  try {
+    const { user } = jwt.verify(authToken, process.env.COOKIE_SECRET);
+
+    res.locals.isLoggedIn = true;
+    res.locals.user_id = user.user_id;
+    next();
+  } catch (err) {
+    console.error(err);
+    res.locals.isLoggedIn = false;
+    next();
+  }
 };

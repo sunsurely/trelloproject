@@ -9,7 +9,7 @@ const { isLoggedIn } = require('../middleware/userState.middleware');
 
 const router = express.Router();
 
-router.post('/join', signupController);
+router.post('/signup', signupController);
 
 router.post('/login', isLoggedIn, loginController);
 

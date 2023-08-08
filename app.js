@@ -2,10 +2,12 @@ const express = require('express');
 const cookieParser = require('cookie-parser');
 const morgan = require('morgan');
 const path = require('path');
+const passport = require('passport');
+const passportConfig = require('./passport');
 
 const app = express();
 require('dotenv').config();
-
+passportConfig();
 const cors = require('cors');
 const mainRouter = require('./routes');
 const { sequelize } = require('./models');
@@ -25,6 +27,7 @@ app.use(cors({ origin: true, credentials: true }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser(process.env.COOKIE_SECRET));
+
 // // app.get("/", "?????");
 // app.use(express.static(path.join(__dirname, '')));
 app.use('/api', mainRouter);

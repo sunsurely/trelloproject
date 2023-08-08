@@ -41,12 +41,8 @@ const signupController = async (req, res, next) => {
     const hash = await bcrypt.hash(password, 12);
     const user = await User.create({
       email,
-      sns_id,
-      nickname,
-      phone,
-      point: 1000000,
+      name,
       password: hash,
-      status,
     });
     return res.status(201).json({ user });
   } catch (error) {
