@@ -1,4 +1,5 @@
 const CardRepo = require('../repositories/cards.repository');
+const { Transaction } = require('sequelize');
 const { MakeError } = require('../utils/makeErrorUtil');
 
 class CardService {
@@ -21,9 +22,9 @@ class CardService {
     }
   };
 
-  getCards = async (columnId) => {
+  getAllCards = async (columnId) => {
     try {
-      const getCardsResult = await this.cardRepo.getCards(columnId);
+      const getCardsResult = await this.cardRepo.getAllCards(columnId);
 
       if (!getCardsResult) {
         throw new MakeError(400, '해당 카드가 존재하지 않습니다.');
@@ -62,6 +63,32 @@ class CardService {
     } catch (err) {
       console.error('CardService_UpdateCard', err);
       throw err;
+    }
+  };
+
+  modifyCardPosition = async (positionInfos) => {
+    const t = await sequelize.transaction({
+      isolationLevel: Transaction.ISOLATION_LEVELS.READ_COMMITTED,
+    });
+    try {
+      const resultFirst = await this.cardRepo.modifyCardPosition(
+        positionInfos[0],
+        t,
+      );
+      const resultSecond = await this.cardRepo.modifyCardPosition(
+        positionInfos[1],
+        t,
+      );
+
+      if (!resultFirst || !resultSecond) {
+        throw new MakeError(402, 'position 수정에 실패했습니다.');
+      }
+
+      await t.commit();
+    } catch (err) {
+      console.error('CardService_UpdateCardPostion', err);
+      await t.rollback();
+      throw error;
     }
   };
 

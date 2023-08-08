@@ -1,5 +1,4 @@
 const Card = require('../models/card');
-const { Op } = require('sequelize');
 
 class CardRepo {
   createCard = async (columnId, description, position, deadline, manager) => {
@@ -14,7 +13,7 @@ class CardRepo {
     return createCardResult;
   };
 
-  getCards = async (columnId) => {
+  getAllCards = async (columnId) => {
     const getCardsResult = await Card.findAll({
       where: { columnId },
       attributes: [
@@ -38,6 +37,15 @@ class CardRepo {
     );
 
     return updateCardResult;
+  };
+
+  modifyCardPosition = async (positionInfo, t) => {
+    const updateCardPositonResult = await Card.update(
+      { position: positionInfo.position },
+      { where: { cardId: positionInfo.cardId }, t },
+    );
+
+    return updateCardPositonResult;
   };
 
   deleteCard = async (cardId) => {

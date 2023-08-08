@@ -12,7 +12,7 @@ class User extends Sequelize.Model {
         },
         boardId: {
           type: Sequelize.INTEGER,
-          allowNull: false,
+          allowNull: true,
         },
         name: {
           type: Sequelize.STRING(100),

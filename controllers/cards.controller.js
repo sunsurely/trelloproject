@@ -40,13 +40,13 @@ class CardController {
     }
   };
 
-  getCards = async (req, res) => {
+  getAllCards = async (req, res) => {
     try {
       const columnId = parseInd(req.params.columnId);
       if (!columnId) {
         return;
       }
-      const getCardsResult = await this.cardService.getCards(columnId);
+      const getCardsResult = await this.cardService.getAllCards(columnId);
 
       res.status(200).json({ message: '카드조회성공', data: getCardsResult });
     } catch (err) {
@@ -63,7 +63,7 @@ class CardController {
       if (!cardId) {
         return res
           .status(400)
-          .json({ errorMessage: 'cardId를 수신받지 못했습니다.' });
+          .json({ errorMessage: '존재하지 않는 카드ID입니다.' });
       }
 
       const updateCardResult = await this.cardService.modifyCard(
@@ -77,6 +77,24 @@ class CardController {
       res.status(201).json({ message: '카드수정성공', data: updateCardResult });
     } catch (err) {
       console.error('CardController_updateCard', err);
+      res.status(401).json({ message: error });
+    }
+  };
+
+  modifyCardPosition = async (req, res) => {
+    try {
+      const { positionInfos } = req.body;
+      if (!positionInfos.length === 0) {
+        return res
+          .status(401)
+          .json({ errorMessage: 'positionInfos가 존재하지 않습니다.' });
+      }
+
+      await this.cardService.modifyCardPosition(positionInfos);
+      res.status(201).json({ message: '카드 위치이동 성공' });
+    } catch (err) {
+      console.error('CardController_modifyCardPosition', err);
+      res.status(401).json({ message: error });
     }
   };
 
