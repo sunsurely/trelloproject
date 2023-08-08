@@ -16,6 +16,14 @@ class ColumnRepository {
       attributes: ['name', 'position'],
       order: [['createdAt', 'DESC']],
     });
+
+  // 컬럼 수정(name)
+  modifyNameOfColumn = async (columnId, name) =>
+    await Column.update({ name }, { where: { columnId } });
+
+  // 컬럼 데이터 찾기
+  findOneColumnDataByColumnId = async (columnId) =>
+    await Column.findOne({ where: { columnId } });
 }
 
 module.exports = ColumnRepository;

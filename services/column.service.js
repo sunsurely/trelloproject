@@ -41,6 +41,29 @@ class ColumnService {
 
     return await this.columnRepository.getAllColumns(boardId);
   };
+
+  // 컬럼 수정(name)
+  modifyNameOfColumn = async (boardId, columnId, name) => {
+    if (!name) {
+      throw new MakeError(400, '수정할 컬럼 이름을 입력해주세요.');
+    }
+
+    const findBoardData = await this.columnRepository.findOneBoardDataByBoardId(
+      boardId,
+    );
+    if (!findBoardData) {
+      throw new MakeError(400, '존재하지 않는 보드입니다.');
+    }
+
+    const findColumnData =
+      await this.columnRepository.findOneColumnDataByColumnId(columnId);
+    if (!findColumnData) {
+      throw new MakeError(400, '존재하지 않는 컬럼입니다.');
+    }
+
+    await this.columnRepository.modifyNameOfColumn(columnId, name);
+    return true;
+  };
 }
 
 module.exports = ColumnService;

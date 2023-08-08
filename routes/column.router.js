@@ -10,4 +10,10 @@ router.post('/:boardId/column', columnController.createColumn);
 // 컬럼 조회
 router.get('/:boardId/column', columnController.getAllColumns);
 
+// 컬럼 수정(name)
+router.put(
+  '/:boardId/column/:columnId/name',
+  columnController.modifyNameOfColumn,
+);
+
 module.exports = router;
