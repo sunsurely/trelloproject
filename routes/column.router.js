@@ -16,4 +16,7 @@ router.put(
   columnController.modifyNameOfColumn,
 );
 
+// 컬럼 삭제
+router.delete('/:boardId/column/:columnId', columnController.deleteColumn);
+
 module.exports = router;

@@ -64,6 +64,25 @@ class ColumnService {
     await this.columnRepository.modifyNameOfColumn(columnId, name);
     return true;
   };
+
+  // 컬럼 삭제
+  deleteColumn = async (boardId, columnId) => {
+    const findBoardData = await this.columnRepository.findOneBoardDataByBoardId(
+      boardId,
+    );
+    if (!findBoardData) {
+      throw new MakeError(400, '존재하지 않는 보드입니다.');
+    }
+
+    const findColumnData =
+      await this.columnRepository.findOneColumnDataByColumnId(columnId);
+    if (!findColumnData) {
+      throw new MakeError(400, '존재하지 않는 컬럼입니다.');
+    }
+
+    await this.columnRepository.deleteColumn(columnId);
+    return;
+  };
 }
 
 module.exports = ColumnService;

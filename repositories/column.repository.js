@@ -24,6 +24,10 @@ class ColumnRepository {
   // 컬럼 데이터 찾기
   findOneColumnDataByColumnId = async (columnId) =>
     await Column.findOne({ where: { columnId } });
+
+  // 컬럼 삭제
+  deleteColumn = async (columnId) =>
+    await Column.destroy({ where: { columnId } });
 }
 
 module.exports = ColumnRepository;
