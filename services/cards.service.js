@@ -4,12 +4,11 @@ const { MakeError } = require('../utils/makeErrorUtil');
 class CardService {
   cardRepo = new CardRepo();
 
-  createCard = async (columnId, description, position, deadline) => {
+  createCard = async (columnId, description, deadline) => {
     try {
       const createCardResult = await this.cardRepo.createCard(
         columnId,
         description,
-        position,
         deadline,
         manager,
       );
@@ -37,7 +36,7 @@ class CardService {
     }
   };
 
-  updateCard = async (
+  modifyCard = async (
     cardId,
     name,
     description,
@@ -46,7 +45,7 @@ class CardService {
     manager,
   ) => {
     try {
-      const updateCardResult = await this.cardRepo.updateCard(
+      const updateCardResult = await this.cardRepo.modifyCard(
         cardId,
         name,
         description,

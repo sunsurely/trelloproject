@@ -4,7 +4,7 @@ const { MakeError } = require('../utils/makeErrorUtil');
 class CommentService {
   commentRepo = new CommentRepo();
 
-  createCard = async (userId, cardId, content) => {
+  createComment = async (userId, cardId, content) => {
     try {
       const createCommentResult = await this.commentRepo.createComment(
         userId,
@@ -15,35 +15,53 @@ class CommentService {
         throw new MakeError(402, '댓글등록에 실패했습니다.');
       }
     } catch (err) {
-      console.error('CommentService_createCard', err);
+      console.error('CommentService_createComment', err);
       throw err;
     }
   };
 
-  getCards = async (columnId) => {
+  getAllComments = async (cardId) => {
     try {
-      const getCardsResult = await this.cardRepo.getCards(columnId);
+      const getCommentsResult = await this.cardRepo.getAllComment(cardId);
 
-      if (!getCardsResult) {
-        throw new MakeError(400, '해당 카드가 존재하지 않습니다.');
+      if (getCommentsResult.length === 0) {
+        throw new MakeError(400, '데이터가 존재하지 않습니다.');
       }
 
-      return getCardsResult;
+      return getCommentsResult;
     } catch (err) {
-      console.error('CardService_getCards', error);
+      console.error('CommentService_CommentAllComments', error);
       throw error;
     }
   };
 
-  deleteCard = async (cardId) => {
+  getComment = async (commentId) => {
     try {
-      const deleteCardResult = await this.cardRepo.deleteCard(cardId);
-      if (!deleteCardResult) {
-        throw new MakeError('402', '해당 카드를 삭제하지 못했습니다.');
+      const getCommentResult = await this.commentRepo.getComment(commentId);
+
+      if (!getCommentResult) {
+        throw new MakeError(400, '해당 댓글이 존재하지 않습니다.');
       }
-      return deleteCardResult;
+
+      return getCommentResult;
     } catch (err) {
-      console.error('CardService_deleteCared', err);
+      console.error('CommentService_CommentComment', error);
+      throw error;
+    }
+  };
+
+  deleteComment = async (userId, commentId) => {
+    try {
+      const deleteCommentResult = await this.commentRepo.deleteComment(
+        userId,
+        commentId,
+      );
+      if (!deleteCommentResult) {
+        throw new MakeError('402', '해당 댓글을 삭제하지 못했습니다.');
+      }
+      return deleteCommentResult;
+    } catch (err) {
+      console.error('CommentService_deleteComment', err);
       throw err;
     }
   };

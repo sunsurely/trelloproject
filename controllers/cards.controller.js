@@ -55,9 +55,9 @@ class CardController {
     }
   };
 
-  updateCard = async (req, res) => {
+  modifyCard = async (req, res) => {
     try {
-      const { name, description, position, deadline, manager } = req.body;
+      const { name, description, deadline, manager } = req.body;
       const cardId = parseInt(req.params.cardId);
 
       if (!cardId) {
@@ -66,11 +66,10 @@ class CardController {
           .json({ errorMessage: 'cardId를 수신받지 못했습니다.' });
       }
 
-      const updateCardResult = await this.cardService.updateCard(
+      const updateCardResult = await this.cardService.modifyCard(
         cardId,
         name,
         description,
-        position,
         deadline,
         manager,
       );

@@ -31,16 +31,9 @@ class CardRepo {
     return getCardsResult;
   };
 
-  updateCard = async (
-    cardId,
-    name,
-    description,
-    position,
-    deadline,
-    manager,
-  ) => {
+  modifyCard = async (cardId, name, description, deadline, manager) => {
     const updateCardResult = await Card.update(
-      { name, description, position, deadline, manager },
+      { name, description, deadline, manager },
       { where: { cardId } },
     );
 
