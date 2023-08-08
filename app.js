@@ -29,17 +29,17 @@ app.use(cookieParser(process.env.COOKIE_SECRET));
 // app.use(express.static(path.join(__dirname, '')));
 app.use('/api', mainRouter);
 
-// app.use((req, res, next) => {
-//   const error = new Error(`${req.method} ${req.url} 라우터가 없습니다.`);
-//   error.status = 404;
-//   next(error);
-// });
+app.use((req, res, next) => {
+  const error = new Error(`${req.method} ${req.url} 라우터가 없습니다.`);
+  error.status = 404;
+  next(error);
+});
 
-// app.use((err, req, res, next) => {
-//   //   res.locals.message = err.message;
-//   console.error(err);
-//   res.status(err.status || 500).json({ message: err });
-// });
+app.use((err, req, res, next) => {
+  //   res.locals.message = err.message;
+  console.error(err);
+  res.status(err.status || 500).json({ message: err });
+});
 
 app.listen(app.get('port'), () => {
   console.log(app.get('port'), '번 포트에서 대기 중');
