@@ -5,7 +5,7 @@ const UserService = require('../services/user.service');
 class UserController {
   userService = new UserService();
   createUser = async (req, res) => {
-    const { email, name, password, confirm } = req.body;
+    const { email, name, password, confirm, content } = req.body;
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
     try {
@@ -48,12 +48,20 @@ class UserController {
         email,
         name,
         hash,
+        content,
       );
 
       return res.status(201).json({ success: true, data: createUserResult });
     } catch (error) {
       console.error(error);
       res.status(401).json({ message: error });
+    }
+  };
+
+  getUser = async (req, res) => {
+    try {
+    } catch (err) {
+      console.error('UserController_');
     }
   };
 }
