@@ -1,6 +1,9 @@
 const ColumnRepository = require('../repositories/column.repository.js');
 const MakeError = require('../utils/makeErrorUtil.js');
 
+const { sequelize } = require('../models');
+const { Transaction } = require('sequelize');
+
 class ColumnService {
   columnRepository = new ColumnRepository();
 
@@ -56,12 +59,66 @@ class ColumnService {
     }
 
     const findColumnData =
-      await this.columnRepository.findOneColumnDataByColumnId(columnId);
+      await this.columnRepository.findOneColumnDataByCondition({ columnId });
     if (!findColumnData) {
       throw new MakeError(400, '존재하지 않는 컬럼입니다.');
     }
 
     await this.columnRepository.modifyNameOfColumn(columnId, name);
+    return true;
+  };
+
+  // 컬럼 수정(position)
+  modifyPositionOfColumn = async (boardId, columnId, position) => {
+    if (isNaN(boardId) || boardId < 1) {
+      throw new MakeError(400, '잘못된 boardId 형식입니다.');
+    }
+
+    if (isNaN(columnId) || columnId < 1) {
+      throw new MakeError(400, '잘못된 columnId 형식입니다.');
+    }
+
+    if (!position) {
+      throw new MakeError(400, '수정할 컬럼 위치를 입력해주세요.');
+    }
+
+    const findColumnData =
+      await this.columnRepository.findOneColumnDataByCondition({ columnId });
+    if (!findColumnData) {
+      throw new MakeError(400, '존재하지 않는 컬럼입니다.');
+    }
+
+    const originalPosition = findColumnData.position;
+
+    const transaction = await sequelize.transaction({
+      isolationLevel: Transaction.ISOLATION_LEVELS.READ_COMMITTED,
+    });
+
+    try {
+      const columnWithNewPosition =
+        await this.columnRepository.findOneColumnDataByCondition({
+          boardId,
+          position,
+        });
+
+      await this.columnRepository.modifyPositionOfColumn(
+        columnId,
+        position,
+        transaction,
+      );
+
+      await this.columnRepository.modifyPositionOfColumn(
+        columnWithNewPosition.columnId,
+        originalPosition,
+        transaction,
+      );
+
+      await transaction.commit();
+    } catch (err) {
+      await transaction.rollback();
+      throw err;
+    }
+
     return true;
   };
 

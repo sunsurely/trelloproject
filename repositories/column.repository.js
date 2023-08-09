@@ -22,8 +22,16 @@ class ColumnRepository {
     await Column.update({ name }, { where: { columnId } });
 
   // 컬럼 데이터 찾기
-  findOneColumnDataByColumnId = async (columnId) =>
-    await Column.findOne({ where: { columnId } });
+  findOneColumnDataByCondition = async (condition) =>
+    await Column.findOne({ where: condition });
+
+  // 컬럼 수정(position)
+  modifyPositionOfColumn = async (columnIdData, positionData, transaction) =>
+    await Column.update(
+      { position: positionData },
+      { where: { columnId: columnIdData } },
+      { transaction },
+    );
 
   // 컬럼 삭제
   deleteColumn = async (columnId) =>

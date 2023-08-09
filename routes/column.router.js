@@ -16,6 +16,12 @@ router.put(
   columnController.modifyNameOfColumn,
 );
 
+// 컬럼 수정(postion)
+router.put(
+  '/:boardId/column/:columnId/position',
+  columnController.modifyPositionOfColumn,
+);
+
 // 컬럼 삭제
 router.delete('/:boardId/column/:columnId', columnController.deleteColumn);
 
