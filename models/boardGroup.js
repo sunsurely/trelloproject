@@ -39,6 +39,7 @@ class BoardGroup extends Sequelize.Model {
   static associate(db) {
     db.BoardGroup.belongsTo(db.User, { foreignKey: 'collaborator', targetKey: 'userId' });
     db.BoardGroup.hasOne(db.Board, { foreignKey: 'boardId', sourceKey: 'boardId' });
+    db.BoardGroup.belongsTo(db.Board, { foreignKey: 'boardId', targetKey: 'boardId' });
   }
 }
 
