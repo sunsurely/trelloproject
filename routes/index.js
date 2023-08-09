@@ -19,6 +19,8 @@ const defaultRoutes = [
   {
     path: '/boards',
     route: columnRouter,
+  },
+  {
     path: '/auth',
     route: authRouter,
   },
