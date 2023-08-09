@@ -71,17 +71,13 @@ class UserService {
     }
   };
 
-  modifyUser = async (userId, email, content) => {
+  modifyUser = async (userId, content) => {
     try {
       if (!userId) {
         throw new MakeError(400, '잘못된 userId입니다.');
       }
 
-      const modifyUserResult = await this.userRepo.modifyUser(
-        userId,
-        email,
-        content,
-      );
+      const modifyUserResult = await this.userRepo.modifyUser(userId, content);
 
       if (!modifyUserResult) {
         throw new MakeError(401, '회원정보 수정에 실패했습니다.');
@@ -94,7 +90,26 @@ class UserService {
     }
   };
 
-  deleteUser = async (userId, password) => {};
+  deleteUser = async (userId, password) => {
+    try {
+      if (!userId) {
+        throw new MakeError(400, '잘못된 유저ID입니다.');
+      }
+      if (!password) {
+        throw new MakeError(400, '비밀번호가 필요합니다.');
+      }
+
+      const deleteUserResult = await this.userRepo.deleteUser(userId, password);
+      if (!deleteUserResult) {
+        throw new MakeError(400, '회원삭제실패');
+      }
+
+      return deleteUserResult;
+    } catch (err) {
+      console.error('UserService_deleteUser', err);
+      throw err;
+    }
+  };
 }
 
 module.exports = UserService;

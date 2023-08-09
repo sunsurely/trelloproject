@@ -1,4 +1,5 @@
 const User = require('../models/user');
+const bcrypt = require('bcrypt');
 
 class UserRepo {
   createUser = async (email, name, hash, content) => {
@@ -19,15 +20,31 @@ class UserRepo {
     return getUserResult;
   };
 
-  modifyUser = async (userId, email, content) => {
+  modifyUser = async (userId, content) => {
     const modifyUserResult = await User.update(
       {
-        email,
         content,
       },
       { where: { userId } },
     );
     return modifyUserResult;
+  };
+
+  deleteUser = async (userId, password) => {
+    const user = await User.findOne({ where: { userId } });
+    const userPassword = user.password;
+
+    const isPasswordValid = await bcrypt.compare(password, userPassword);
+
+    if (!isPasswordValid) {
+      return null;
+    }
+
+    const deleteUserResult = await User.destroy({
+      where: { userId },
+    });
+
+    return deleteUserResult;
   };
 }
 

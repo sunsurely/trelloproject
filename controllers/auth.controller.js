@@ -1,27 +1,34 @@
-const passport = require('passport');
 const jwt = require('jsonwebtoken');
+const User = require('../models/user');
+const bcrypt = require('bcrypt');
 
 exports.loginController = async (req, res, next) => {
   try {
+    const { email, password } = req.body;
     if (res.locals.isLoggedIn) {
       return res.status(400).json({ errorMessage: '이미 로그인 중입니다.' });
     }
-    passport.authenticate('local', (passportError, user, info) => {
-      if (passportError) {
-        return res.status(400).json({ reason: info });
-      }
-      req.login(user, { session: false }, (loginError) => {
-        if (loginError) {
-          return res.status(400).json({ errorMessage: loginError });
-        }
-        const token = jwt.sign({ user: user }, process.env.COOKIE_SECRET);
+    const user = await User.findOne({ where: { email } });
 
-        // res.cookie('authorization', `Bearer ${token}`);
-        return res
-          .status(200)
-          .json({ message: '로그인 되었습니다.', jwtToken: `Bearer ${token}` });
-      });
-    })(req, res, next);
+    if (!user) {
+      return res
+        .status(400)
+        .json({ errorMessage: '존재하지 않는 사용자입니다' });
+    }
+    if (!password) {
+      return res.status(400).json({ errorMessage: '비밀번호를 입력해 주세요' });
+    }
+    const compareResult = await bcrypt.compare(password, user.password);
+
+    if (!compareResult) {
+      return res
+        .status(400)
+        .json({ errorMessage: '비밀번호가 일치하지 않습니다' });
+    }
+    const token = jwt.sign({ user: user }, process.env.COOKIE_SECRET);
+    res
+      .status(200)
+      .json({ message: '로그인되었습니다.', jwtToken: `Bearer ${token}` });
   } catch (error) {
     console.error(error);
     next(error);

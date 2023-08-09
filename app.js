@@ -2,19 +2,17 @@ const express = require('express');
 const cookieParser = require('cookie-parser');
 const morgan = require('morgan');
 const path = require('path');
-const passport = require('passport');
-const passportConfig = require('./passport');
 
 const app = express();
 require('dotenv').config();
-passportConfig();
+
 const cors = require('cors');
 const mainRouter = require('./routes');
 const { sequelize } = require('./models');
 app.set('port', process.env.PORT || 3000);
 
 // sequelize
-//   .sync({ force: false })
+//   .sync({ force: true })
 //   .then(() => {
 //     console.log('데이터베이스 연결 성공');
 //   })
