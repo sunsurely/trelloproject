@@ -23,4 +23,4 @@ class UserService {
   };
 }
 
-module.exports = UserRepo;
+module.exports = UserService;

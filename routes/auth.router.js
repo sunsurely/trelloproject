@@ -1,5 +1,5 @@
 const express = require('express');
-const signupController = require('../controllers/signup.controller');
+const signupController = require('../controllers/user.controller');
 const {
   loginController,
   logoutController,
@@ -8,8 +8,6 @@ const {
 const { isLoggedIn } = require('../middleware/userState.middleware');
 
 const router = express.Router();
-
-router.post('/signup', signupController);
 
 router.post('/login', isLoggedIn, loginController);
 

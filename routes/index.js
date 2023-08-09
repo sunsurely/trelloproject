@@ -3,6 +3,7 @@ const router = express.Router();
 const cardRouter = require('./card.router');
 const commentRouter = require('./comment.router');
 const authRouter = require('./auth.router');
+const userRouter = require('./user.router');
 
 const defaultRoutes = [
   {
@@ -16,6 +17,10 @@ const defaultRoutes = [
   {
     path: '/auth',
     route: authRouter,
+  },
+  {
+    path: '/user',
+    route: userRouter,
   },
 ];
 
