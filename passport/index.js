@@ -6,15 +6,15 @@ require('dotenv').config();
 
 const { User } = require('../models');
 
-const localConfig = { usernameField: 'account', passwordField: 'password' };
+const localConfig = { usernameField: 'email', passwordField: 'password' };
 
-const localVerify = async (account, password, done) => {
+const localVerify = async (email, password, done) => {
   try {
-    if (!account) {
+    if (!email) {
       done(null, false, { message: '이메일을 입력해주세요' });
       return;
     }
-    const user = await User.findOne({ where: { account } });
+    const user = await User.findOne({ where: { email } });
     if (!user) {
       done(null, false, { message: '존재하지 않는 사용자 입니다.' });
       return;

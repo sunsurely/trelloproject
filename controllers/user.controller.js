@@ -23,9 +23,8 @@ class UserController {
 
   getUser = async (req, res) => {
     try {
-      const userId = parseInt(req.params.userId);
-      console.log(userId);
-      const getUserResult = await this.userService.getUser(userId);
+      const email = req.body.email;
+      const getUserResult = await this.userService.getUser(email);
       res.status(200).json({ success: true, data: getUserResult });
     } catch (err) {
       console.error('UserController_getUser', err);
@@ -53,6 +52,11 @@ class UserController {
   deleteUser = async (req, res) => {
     try {
       const userId = parseInt(req.params.userId);
+      const { password } = req.body;
+      const deleteUserResult = await this.userService.deleteUser(
+        userId,
+        password,
+      );
     } catch (err) {
       console.error('UserController_deleteUser', err);
       res.status(401).json({ error: err });

@@ -53,12 +53,12 @@ class UserService {
     }
   };
 
-  getUser = async (userId) => {
+  getUser = async (email) => {
     try {
-      if (!userId) {
-        throw new MakeError(400, '잘못된 userId입니다.');
+      if (!email) {
+        throw new MakeError(400, '잘못된 email입니다.');
       }
-      const getUserResult = await this.userRepo.getUser(userId);
+      const getUserResult = await this.userRepo.getUser(email);
 
       if (!getUserResult) {
         throw new MakeError(400, '해당하는 유저가 존재하지 않습니다.');
@@ -93,6 +93,8 @@ class UserService {
       throw err;
     }
   };
+
+  deleteUser = async (userId, password) => {};
 }
 
 module.exports = UserService;

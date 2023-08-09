@@ -14,7 +14,7 @@ exports.loginController = async (req, res, next) => {
         if (loginError) {
           return res.status(400).json({ errorMessage: loginError });
         }
-        const token = jwt.sign({ isLoggedIn: user }, process.env.COOKIE_SECRET);
+        const token = jwt.sign({ user: user }, process.env.COOKIE_SECRET);
 
         // res.cookie('authorization', `Bearer ${token}`);
         return res
