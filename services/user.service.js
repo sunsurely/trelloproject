@@ -1,11 +1,41 @@
 const UserRepo = require('../repositories/user.repository');
-const { MakeError } = require('../utils/makeErrorUtil');
+const bcrypt = require('bcrypt');
+const MakeError = require('../utils/makeErrorUtil');
 
 class UserService {
   userRepo = new UserRepo();
 
-  createUser = async (email, name, hash) => {
+  createUser = async (email, name, password, confirm, content) => {
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     try {
+      if (!email) {
+        throw new MakeError(400, 'email을 입력해주세요');
+      }
+      if (!emailRegex.test(email)) {
+        throw new MakeError(400, '이메일 형식이 올바르지 않습니다.');
+      }
+      const exUser = await this.userRepo.getUser(email);
+      if (exUser) {
+        throw new MakeError(400, '사용할 수 없는 email입니다.');
+      }
+      if (!name) {
+        throw new MakeError(400, 'name을 입력해 주세요');
+      }
+      if (!password) {
+        throw new MakeError(400, '비밀번호를 입력해 주세요');
+      }
+      if (!confirm) {
+        throw new MakeError(400, '비밀번호 확인을 입력해 주세요');
+      }
+
+      if (password !== confirm) {
+        throw new MakeError(
+          400,
+          '비밀번호와 비밀번호 확인이 일치하지 않습니다.',
+        );
+      }
+      const hash = await bcrypt.hash(password, 12);
+
       const createUserResult = await this.userRepo.createUser(
         email,
         name,
@@ -25,7 +55,10 @@ class UserService {
 
   getUser = async (userId) => {
     try {
-      const getUserResult = await this.UserService.getUser(userId);
+      if (!userId) {
+        throw new MakeError(400, '잘못된 userId입니다.');
+      }
+      const getUserResult = await this.userRepo.getUser(userId);
 
       if (!getUserResult) {
         throw new MakeError(400, '해당하는 유저가 존재하지 않습니다.');
@@ -34,6 +67,29 @@ class UserService {
       return getUserResult;
     } catch (err) {
       console.error('UserService_getUser', err);
+      throw err;
+    }
+  };
+
+  modifyUser = async (userId, email, content) => {
+    try {
+      if (!userId) {
+        throw new MakeError(400, '잘못된 userId입니다.');
+      }
+
+      const modifyUserResult = await this.userRepo.modifyUser(
+        userId,
+        email,
+        content,
+      );
+
+      if (!modifyUserResult) {
+        throw new MakeError(401, '회원정보 수정에 실패했습니다.');
+      }
+
+      return modifyUserResult;
+    } catch (err) {
+      console.error('UserService_modifyUser', err);
       throw err;
     }
   };

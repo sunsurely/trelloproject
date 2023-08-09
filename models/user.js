@@ -15,7 +15,7 @@ class User extends Sequelize.Model {
           allowNull: true,
         },
         email: {
-          type: Sequelize.STRING(15),
+          type: Sequelize.STRING(30),
           allowNull: false,
           unique: true,
         },
@@ -45,9 +45,9 @@ class User extends Sequelize.Model {
     db.User.hasMany(db.Board, { foreignKey: 'userId', sourceKey: 'userId' });
     db.User.hasMany(db.Comment, { foreignKey: 'userId', sourceKey: 'userId' });
     db.User.hasMany(db.BoardGroup, {
-        foreignKey: 'collaborator',
-        soucreKey: 'userId',
-      });
+      foreignKey: 'collaborator',
+      soucreKey: 'userId',
+    });
   }
 }
 

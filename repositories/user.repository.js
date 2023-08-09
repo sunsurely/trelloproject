@@ -14,9 +14,20 @@ class UserRepo {
 
   getUser = async (userId) => {
     const getUserResult = await User.findOne({
-      where: userId,
+      where: { userId },
     });
     return getUserResult;
+  };
+
+  modifyUser = async (userId, email, content) => {
+    const modifyUserResult = await User.update(
+      {
+        email,
+        content,
+      },
+      { where: { userId } },
+    );
+    return modifyUserResult;
   };
 }
 
