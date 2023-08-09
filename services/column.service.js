@@ -10,7 +10,7 @@ class ColumnService {
   // 컬럼 추가
   createColumn = async (boardId, name, position, userId) => {
     if (isNaN(boardId) || boardId < 1) {
-      throw new MakeError(400, '잘못된 boardId입니다.');
+      throw new MakeError(400, '잘못된 boardId 형식입니다.');
     }
 
     if (!name) {
@@ -42,6 +42,10 @@ class ColumnService {
 
   // 컬럼 조회
   getAllColumns = async (boardId, userId) => {
+    if (isNaN(boardId) || boardId < 1) {
+      throw new MakeError(400, '잘못된 boardId 형식입니다.');
+    }
+
     const findBoardData = await this.columnRepository.findOneBoardDataByBoardId(
       boardId,
     );
@@ -131,21 +135,20 @@ class ColumnService {
         throw new MakeError(403, '해당 보드에 초대된 회원이 아닙니다.');
       }
 
-      const originalPosition = findColumnData.position;
-
       const columnWithNewPosition =
         await this.columnRepository.findOneColumnDataByCondition({
           boardId,
           position,
         });
 
-      const columnWithNewPositionColumnId = columnWithNewPosition.columnId;
-
       await this.columnRepository.modifyPositionOfColumn(
         columnId,
         position,
         transaction,
       );
+
+      const originalPosition = findColumnData.position;
+      const columnWithNewPositionColumnId = columnWithNewPosition.columnId;
 
       await this.columnRepository.modifyPositionOfColumn(
         columnWithNewPositionColumnId,
