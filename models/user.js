@@ -10,10 +10,6 @@ class User extends Sequelize.Model {
           allowNull: false,
           autoIncrement: true,
         },
-        boardId: {
-          type: Sequelize.INTEGER,
-          allowNull: false,
-        },
         name: {
           type: Sequelize.STRING(100),
           allowNull: true,

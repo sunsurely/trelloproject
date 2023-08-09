@@ -22,73 +22,71 @@ class CommentController {
         return res.status(400).json({ errorMessage: '내용이 없습니다.' });
       }
 
-      await this.cardService.createComment(userId, cardId, content);
+      await this.commentService.createComment(userId, cardId, content);
 
       res
         .status(201)
         .json({ sucess: true, message: '댓글등록에 성공했습니다.' });
     } catch (err) {
-      console.error('CommentController_createCard', err);
+      console.error('CommentController_createComment', err);
       res.status(402).json({ error: err });
     }
   };
 
-  getCards = async (req, res) => {
+  getAllComments = async (req, res) => {
     try {
-      const columnId = parseInd(req.params.columnId);
-      if (!columnId) {
-        return;
+      const cardId = parseInd(req.query.cardId);
+      if (!cardId) {
+        return res
+          .status(400)
+          .json({ errorMessage: 'cardId를 수신받지 못했습니다.' });
       }
-      const getCardsResult = await this.cardService.getCards(columnId);
-
-      res.status(200).json({ message: '카드조회성공', data: getCardsResult });
+      const getAllCommentsResult = await this.commentService.getALlcomments(
+        cardId,
+      );
+      res
+        .status(200)
+        .json({ message: '댓글조회성공', data: getAllCommentsResult });
     } catch (err) {
-      console.error('CardController_getCards', error);
+      console.error('CommentController_getComment', error);
       res.status(400).json({ message: error });
     }
   };
 
-  updateCard = async (req, res) => {
+  getComment = async (req, res) => {
     try {
-      const { name, description, position, deadline, manager } = req.body;
-      const cardId = parseInt(req.params.cardId);
-
-      if (!cardId) {
+      const commentId = parseInd(req.query.commentId);
+      if (!commentId) {
         return res
           .status(400)
-          .json({ errorMessage: 'cardId를 수신받지 못했습니다.' });
+          .json({ errorMessage: 'commentId를 수신받지 못했습니다.' });
       }
-
-      const updateCardResult = await this.cardService.updateCard(
-        cardId,
-        name,
-        description,
-        position,
-        deadline,
-        manager,
-      );
-
-      res.status(201).json({ message: '카드수정성공', data: updateCardResult });
+      const getCommentResult = await this.commentService.getcomment(columnId);
+      res.status(200).json({ message: '댓글조회성공', data: getCommentResult });
     } catch (err) {
-      console.error('CardController_updateCard', err);
+      console.error('CommentController_getComment', error);
+      res.status(400).json({ message: error });
     }
   };
 
-  deleteCard = async (req, res) => {
+  deleteComment = async (req, res) => {
     try {
-      const cardId = parseInt(req.params.cardId);
-      if (!cardId) {
+      const commentId = parseInt(req.query.commentId);
+      if (!commentId) {
         return res
           .status(400)
-          .json({ errorMessage: 'cardId를 수신받지 못했습니다.' });
+          .json({ errorMessage: 'commentId를 수신받지 못했습니다.' });
       }
-      const deleteCartResult = await this.cardService.deleteCard(cardId);
+      const deleteCommentResult = await this.commentService.deleteComment(
+        userID,
+        commentId,
+      );
 
       res
         .status(201)
-        .json({ message: '카드를 삭제했습니다.', data: deleteCartResult });
+        .json({ message: '댓글을 삭제했습니다.', data: deleteCommentResult });
     } catch (err) {
-      console.error('CardController_deleteCared', err);
+      console.error('CommentController_deleteComment', err);
       res.status(401).json({ errorMessage: err });
     }
   };

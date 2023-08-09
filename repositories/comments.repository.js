@@ -12,35 +12,30 @@ class CommentRepo {
     return createCardResult;
   };
 
-  getCards = async (columnId) => {
-    const getCardsResult = await Card.findAll({
-      where: { columnId },
-      attributes: [
-        'cardId',
-        'name',
-        'description',
-        'position',
-        'deadline',
-        'createdAt',
-      ],
+  getAllComments = async (cardId) => {
+    const getCommentsResult = await Comment.findAll({
+      where: { cardId },
+      attributes: ['commentId', 'content', 'createdAt'],
     });
 
-    return getCardresult;
+    return getCommentsResult;
   };
 
-  updateCard = async (cardId, name, description, position, deadline) => {
-    const updateCardResult = await Card.update(
-      { name, description, position, deadline },
-      { where: { cardId } },
-    );
+  getComment = async (commentId) => {
+    const getCommentResult = await Comment.findOne({
+      where: { commentId },
+      attributes: ['commentId', 'content', 'createdAt'],
+    });
 
-    return updateCardResult;
+    return getCommentResult;
   };
 
-  deleteCard = async (cardId) => {
-    const deleteCardResult = await Card.destroy({ where: { cardId } });
+  deleteComment = async (userId, commentId) => {
+    const deleteCommentResult = await Comment.destroy({
+      where: { commentId, userId },
+    });
 
-    return deleteCardResult[0];
+    return deleteCommentResult[0];
   };
 }
 

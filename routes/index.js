@@ -4,6 +4,8 @@ const router = express.Router();
 const cardRouter = require('./card.router');
 const commentRouter = require('./comment.router');
 const columnRouter = require('./column.router.js');
+const authRouter = require('./auth.router');
+const userRouter = require('./user.router');
 
 const defaultRoutes = [
   {
@@ -17,6 +19,12 @@ const defaultRoutes = [
   {
     path: '/boards',
     route: columnRouter,
+    path: '/auth',
+    route: authRouter,
+  },
+  {
+    path: '/user',
+    route: userRouter,
   },
 ];
 
