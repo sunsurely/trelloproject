@@ -12,9 +12,9 @@ class UserRepo {
     return createUserResult;
   };
 
-  getUser = async (userId) => {
+  getUser = async (email) => {
     const getUserResult = await User.findOne({
-      where: { userId },
+      where: { email },
     });
     return getUserResult;
   };

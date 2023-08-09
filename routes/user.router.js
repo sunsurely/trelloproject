@@ -8,6 +8,6 @@ const userController = new UserController();
 const router = express.Router();
 
 router.post('/signup', userController.createUser);
-router.get('/me/:userId', authorizated, userController.getUser);
+router.get('/me/', authorizated, userController.getUser);
 router.put('/me/:userId', authorizated, userController.modifyUser);
 module.exports = router;
