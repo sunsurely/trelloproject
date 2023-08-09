@@ -9,5 +9,6 @@ const router = express.Router();
 
 router.post('/signup', userController.createUser);
 router.get('/me/', authorizated, userController.getUser);
-router.put('/me/:userId', authorizated, userController.modifyUser);
+router.put('/me/', authorizated, userController.modifyUser);
+router.delete('/me/', authorizated, userController.deleteUser);
 module.exports = router;

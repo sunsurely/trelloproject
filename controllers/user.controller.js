@@ -34,14 +34,14 @@ class UserController {
 
   modifyUser = async (req, res) => {
     try {
-      const userId = parseInt(req.params.userId);
-      const { content, email } = req.body;
+      const userId = res.locals.userId;
+      const { content } = req.body;
 
       const modifyUserResult = await this.userService.modifyUser(
         userId,
-        email,
         content,
       );
+
       res.status(200).json({ success: true, modifyUserResult });
     } catch (err) {
       console.error('UserController_modifyUser', err);
@@ -51,12 +51,14 @@ class UserController {
 
   deleteUser = async (req, res) => {
     try {
-      const userId = parseInt(req.params.userId);
+      const userId = res.locals.userId;
       const { password } = req.body;
       const deleteUserResult = await this.userService.deleteUser(
         userId,
         password,
       );
+
+      res.status(402).json({ sucess: true, deleteUserResult });
     } catch (err) {
       console.error('UserController_deleteUser', err);
       res.status(401).json({ error: err });

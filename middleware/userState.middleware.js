@@ -15,7 +15,6 @@ exports.authorizated = async (req, res, next) => {
 
   try {
     const { user } = jwt.verify(authToken, process.env.COOKIE_SECRET);
-
     res.locals.userId = user.userId;
     next();
   } catch (error) {
