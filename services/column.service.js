@@ -101,6 +101,8 @@ class ColumnService {
           position,
         });
 
+      const columnWithNewPositionColumnId = columnWithNewPosition.columnId;
+
       await this.columnRepository.modifyPositionOfColumn(
         columnId,
         position,
@@ -108,7 +110,7 @@ class ColumnService {
       );
 
       await this.columnRepository.modifyPositionOfColumn(
-        columnWithNewPosition.columnId,
+        columnWithNewPositionColumnId,
         originalPosition,
         transaction,
       );

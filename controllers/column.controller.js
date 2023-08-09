@@ -25,8 +25,8 @@ class ColumnController {
   getAllColumns = async (req, res) => {
     try {
       const { boardId } = req.params;
-      const columnList = await this.columnService.getAllColumns(boardId);
 
+      const columnList = await this.columnService.getAllColumns(boardId);
       return res.status(200).json({ columnList });
     } catch (err) {
       if (err instanceof MakeError) {
