@@ -37,7 +37,6 @@ class ColumnService {
     const findBoardData = await this.columnRepository.findOneBoardDataByBoardId(
       boardId,
     );
-
     if (!findBoardData) {
       throw new MakeError(400, '존재하지 않는 보드입니다.');
     }
@@ -47,15 +46,16 @@ class ColumnService {
 
   // 컬럼 수정(name)
   modifyNameOfColumn = async (boardId, columnId, name) => {
-    if (!name) {
-      throw new MakeError(400, '수정할 컬럼 이름을 입력해주세요.');
+    if (isNaN(boardId) || boardId < 1) {
+      throw new MakeError(400, '잘못된 boardId 형식입니다.');
     }
 
-    const findBoardData = await this.columnRepository.findOneBoardDataByBoardId(
-      boardId,
-    );
-    if (!findBoardData) {
-      throw new MakeError(400, '존재하지 않는 보드입니다.');
+    if (isNaN(columnId) || columnId < 1) {
+      throw new MakeError(400, '잘못된 columnId 형식입니다.');
+    }
+
+    if (!name) {
+      throw new MakeError(400, '수정할 컬럼 이름을 입력해주세요.');
     }
 
     const findColumnData =
@@ -82,19 +82,19 @@ class ColumnService {
       throw new MakeError(400, '수정할 컬럼 위치를 입력해주세요.');
     }
 
-    const findColumnData =
-      await this.columnRepository.findOneColumnDataByCondition({ columnId });
-    if (!findColumnData) {
-      throw new MakeError(400, '존재하지 않는 컬럼입니다.');
-    }
-
-    const originalPosition = findColumnData.position;
-
     const transaction = await sequelize.transaction({
       isolationLevel: Transaction.ISOLATION_LEVELS.READ_COMMITTED,
     });
 
     try {
+      const findColumnData =
+        await this.columnRepository.findOneColumnDataByCondition({ columnId });
+      if (!findColumnData) {
+        throw new MakeError(400, '존재하지 않는 컬럼입니다.');
+      }
+
+      const originalPosition = findColumnData.position;
+
       const columnWithNewPosition =
         await this.columnRepository.findOneColumnDataByCondition({
           boardId,
@@ -124,15 +124,16 @@ class ColumnService {
 
   // 컬럼 삭제
   deleteColumn = async (boardId, columnId) => {
-    const findBoardData = await this.columnRepository.findOneBoardDataByBoardId(
-      boardId,
-    );
-    if (!findBoardData) {
-      throw new MakeError(400, '존재하지 않는 보드입니다.');
+    if (isNaN(boardId) || boardId < 1) {
+      throw new MakeError(400, '잘못된 boardId 형식입니다.');
+    }
+
+    if (isNaN(columnId) || columnId < 1) {
+      throw new MakeError(400, '잘못된 columnId 형식입니다.');
     }
 
     const findColumnData =
-      await this.columnRepository.findOneColumnDataByColumnId(columnId);
+      await this.columnRepository.findOneColumnDataByCondition({ columnId });
     if (!findColumnData) {
       throw new MakeError(400, '존재하지 않는 컬럼입니다.');
     }

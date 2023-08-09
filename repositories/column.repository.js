@@ -13,8 +13,8 @@ class ColumnRepository {
   getAllColumns = async (boardId) =>
     await Column.findAll({
       where: { boardId },
-      attributes: ['name', 'position'],
-      order: [['createdAt', 'DESC']],
+      attributes: ['columnId', 'name', 'position'],
+      order: [['position', 'DESC']],
     });
 
   // 컬럼 수정(name)
