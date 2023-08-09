@@ -8,7 +8,7 @@ class ColumnService {
   columnRepository = new ColumnRepository();
 
   // 컬럼 추가
-  createColumn = async (boardId, name, position) => {
+  createColumn = async (boardId, name, position, userId) => {
     if (isNaN(boardId) || boardId < 1) {
       throw new MakeError(400, '잘못된 boardId입니다.');
     }
@@ -28,12 +28,20 @@ class ColumnService {
       throw new MakeError(400, '존재하지 않는 보드입니다.');
     }
 
+    const findCollaborator = await this.columnRepository.checkCollaborator(
+      boardId,
+      userId,
+    );
+    if (!findCollaborator) {
+      throw new MakeError(400, '해당 보드에 초대된 회원이 아닙니다.');
+    }
+
     await this.columnRepository.createColumn(boardId, name, position);
     return true;
   };
 
   // 컬럼 조회
-  getAllColumns = async (boardId) => {
+  getAllColumns = async (boardId, userId) => {
     const findBoardData = await this.columnRepository.findOneBoardDataByBoardId(
       boardId,
     );
@@ -41,11 +49,19 @@ class ColumnService {
       throw new MakeError(400, '존재하지 않는 보드입니다.');
     }
 
+    const findCollaborator = await this.columnRepository.checkCollaborator(
+      boardId,
+      userId,
+    );
+    if (!findCollaborator) {
+      throw new MakeError(400, '해당 보드에 초대된 회원이 아닙니다.');
+    }
+
     return await this.columnRepository.getAllColumns(boardId);
   };
 
   // 컬럼 수정(name)
-  modifyNameOfColumn = async (boardId, columnId, name) => {
+  modifyNameOfColumn = async (boardId, columnId, name, userId) => {
     if (isNaN(boardId) || boardId < 1) {
       throw new MakeError(400, '잘못된 boardId 형식입니다.');
     }
@@ -64,12 +80,20 @@ class ColumnService {
       throw new MakeError(400, '존재하지 않는 컬럼입니다.');
     }
 
+    const findCollaborator = await this.columnRepository.checkCollaborator(
+      boardId,
+      userId,
+    );
+    if (!findCollaborator) {
+      throw new MakeError(400, '해당 보드에 초대된 회원이 아닙니다.');
+    }
+
     await this.columnRepository.modifyNameOfColumn(columnId, name);
     return true;
   };
 
   // 컬럼 수정(position)
-  modifyPositionOfColumn = async (boardId, columnId, position) => {
+  modifyPositionOfColumn = async (boardId, columnId, position, userId) => {
     if (isNaN(boardId) || boardId < 1) {
       throw new MakeError(400, '잘못된 boardId 형식입니다.');
     }
@@ -91,6 +115,14 @@ class ColumnService {
         await this.columnRepository.findOneColumnDataByCondition({ columnId });
       if (!findColumnData) {
         throw new MakeError(400, '존재하지 않는 컬럼입니다.');
+      }
+
+      const findCollaborator = await this.columnRepository.checkCollaborator(
+        boardId,
+        userId,
+      );
+      if (!findCollaborator) {
+        throw new MakeError(400, '해당 보드에 초대된 회원이 아닙니다.');
       }
 
       const originalPosition = findColumnData.position;
@@ -125,7 +157,7 @@ class ColumnService {
   };
 
   // 컬럼 삭제
-  deleteColumn = async (boardId, columnId) => {
+  deleteColumn = async (boardId, columnId, userId) => {
     if (isNaN(boardId) || boardId < 1) {
       throw new MakeError(400, '잘못된 boardId 형식입니다.');
     }
@@ -138,6 +170,14 @@ class ColumnService {
       await this.columnRepository.findOneColumnDataByCondition({ columnId });
     if (!findColumnData) {
       throw new MakeError(400, '존재하지 않는 컬럼입니다.');
+    }
+
+    const findCollaborator = await this.columnRepository.checkCollaborator(
+      boardId,
+      userId,
+    );
+    if (!findCollaborator) {
+      throw new MakeError(400, '해당 보드에 초대된 회원이 아닙니다.');
     }
 
     await this.columnRepository.deleteColumn(columnId);
