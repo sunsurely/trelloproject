@@ -1,8 +1,9 @@
 const Sequelize = require('sequelize');
+const Board = require("../models/board");
 
 class BoardGroup extends Sequelize.Model {
   static initiate(sequelize) {
-    Board.init(
+    BoardGroup.init(
       {
         boardGroupId: {
           type: Sequelize.INTEGER,
@@ -15,11 +16,11 @@ class BoardGroup extends Sequelize.Model {
           allowNull: false,
         },
         collaborator: {
-          type: Sequelize.STRING(30),
+          type: Sequelize.INTEGER,
           allowNull: false,
         },
         permission: {
-          type: Sequelize.ENUM('admin', "readonly", 'write'),
+          type: Sequelize.ENUM('admin', 'write'),
           allowNull: false,
         },
       },
@@ -28,7 +29,7 @@ class BoardGroup extends Sequelize.Model {
         timestamps: true,
         underscored: false,
         modelName: 'BoardGroup',
-        tableName: 'boardGroups',
+        tableName: 'boardgroups',
         paranoid: false,
         charset: 'utf8',
         collate: 'utf8_general_ci',
