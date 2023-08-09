@@ -5,7 +5,7 @@ class UserRepo {
     const createUserResult = await User.create({
       email,
       name,
-      hash,
+      password: hash,
     });
 
     return createUserResult;

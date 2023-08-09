@@ -53,7 +53,7 @@ class UserController {
       return res.status(201).json({ success: true, data: createUserResult });
     } catch (error) {
       console.error(error);
-      return next(error);
+      res.status(401).json({ message: error });
     }
   };
 }

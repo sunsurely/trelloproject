@@ -17,7 +17,7 @@ class UserService {
 
       return createUserResult;
     } catch (err) {
-      console.error('UserService_createUser', error);
+      console.error('UserService_createUser', err);
       throw err;
     }
   };
