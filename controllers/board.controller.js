@@ -132,7 +132,7 @@ class BoardController {
   temp = 10;
 
   // 보드 등록(생성)
-  async createBoard(req, res, next) {
+  createBoard = async (req, res, next) => {
     const { name, color, discription } = req.body;
     console.log(name, color, discription);
     try {
@@ -142,7 +142,7 @@ class BoardController {
     } catch (err) {
       console.error(err);
     }
-  }
+  };
 }
 
 module.exports = BoardController;

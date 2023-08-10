@@ -5,7 +5,7 @@ const MakeError = require('../utils/makeErrorUtil');
 class CardService {
   cardRepo = new CardRepo();
 
-  createCard = async (columnId, description, deadline, manager) => {
+  createCard = async (columnId, description, position, deadline, manager) => {
     try {
       if (!columnId) {
         throw new MakeError(400, 'columnId가 존재하지 않습니다.');
@@ -17,6 +17,7 @@ class CardService {
       const createCardResult = await this.cardRepo.createCard(
         columnId,
         description,
+        position,
         deadline,
         manager,
       );

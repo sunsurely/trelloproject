@@ -1,5 +1,4 @@
 const express = require('express');
-const signupController = require('../controllers/user.controller');
 const {
   loginController,
   logoutController,
