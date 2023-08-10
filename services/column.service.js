@@ -28,6 +28,12 @@ class ColumnService {
       throw new MakeError(404, '존재하지 않는 보드입니다.');
     }
 
+    const findColumnPosition =
+      await this.columnRepository.findOneColumnDataByCondition({ position });
+    if (findColumnPosition) {
+      throw new MakeError(400, '잘못된 컬럼 위치입니다.');
+    }
+
     const findCollaborator = await this.columnRepository.checkCollaborator(
       boardId,
       userId,
