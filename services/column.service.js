@@ -140,6 +140,9 @@ class ColumnService {
           boardId,
           position,
         });
+      if (!columnWithNewPosition) {
+        throw new MakeError(400, '잘못된 컬럼 위치입니다.');
+      }
 
       await this.columnRepository.modifyPositionOfColumn(
         columnId,
