@@ -48,7 +48,7 @@ class BoardService {
     return result;
   };
 
-  updateBoard = async (id, name, color, description) => {
+  modifyBoard = async (id, name, color, description) => {
     const result = await this.boardRepo.updateBoard(
       id,
       name,
