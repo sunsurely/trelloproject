@@ -94,12 +94,10 @@ class BoardController {
         description,
       );
       if (result) {
-        return res
-          .status(201)
-          .json({
-            data: { name, color, description },
-            message: '수정이 완료됐습니다.',
-          });
+        return res.status(201).json({
+          data: { name, color, description },
+          message: '수정이 완료됐습니다.',
+        });
       } else {
         throw new MakeError(400, '수정을 실패하였습니다.');
       }

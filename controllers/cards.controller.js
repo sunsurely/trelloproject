@@ -18,7 +18,7 @@ class CardController {
       res.status(201).json({
         sucess: true,
         message: '카드등록에 성공했습니다.',
-        data: createCardResult,
+        createCardResult,
       });
     } catch (err) {
       console.error('CardController_createCard', err);
