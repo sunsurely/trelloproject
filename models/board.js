@@ -10,7 +10,7 @@ class Board extends Sequelize.Model {
           primaryKey: true,
           autoIncrement: true,
         },
-        userId: {
+        ownerId: {
           type: Sequelize.INTEGER,
           allowNull: false,
         },
@@ -41,7 +41,18 @@ class Board extends Sequelize.Model {
   }
 
   static associate(db) {
-    db.Board.belongsTo(db.User, { foreignKey: 'userId', targetKey: 'userId' });
+    db.Board.belongsTo(db.User, {
+      foreignKey: 'ownerId',
+      targetKey: 'userId',
+    });
+    db.Board.hasMany(db.BoardGroup, {
+      foreignKey: 'boardId',
+      sourceKey: 'boardId',
+    });
+    db.Board.hasMany(db.Column, {
+      foreignKey: 'boardId',
+      sourceKey: 'boardId',
+    });
   }
 }
 

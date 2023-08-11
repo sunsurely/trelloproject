@@ -10,12 +10,16 @@ class User extends Sequelize.Model {
           allowNull: false,
           autoIncrement: true,
         },
+        // boardId: {
+        //   type: Sequelize.INTEGER,
+        //   allowNull: false,
+        // },
         name: {
           type: Sequelize.STRING(100),
           allowNull: true,
         },
         email: {
-          type: Sequelize.STRING(30),
+          type: Sequelize.STRING(15),
           allowNull: false,
           unique: true,
         },
@@ -42,7 +46,7 @@ class User extends Sequelize.Model {
   }
 
   static associate(db) {
-    db.User.hasMany(db.Board, { foreignKey: 'userId', sourceKey: 'userId' });
+    db.User.hasMany(db.Board, { foreignKey: 'ownerId', sourceKey: 'userId' });
     db.User.hasMany(db.Comment, { foreignKey: 'userId', sourceKey: 'userId' });
     db.User.hasMany(db.BoardGroup, {
       foreignKey: 'collaborator',
