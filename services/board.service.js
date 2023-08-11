@@ -67,7 +67,6 @@ class BoardService {
   // 보드를 수정할 때는 cache를 사용하는게 어떨까?
   modifyBoard = async (
     userId,
-    // boardToken,
     boardId,
     name,
     color,
@@ -97,7 +96,6 @@ class BoardService {
     return result;
   };
 
-  //   deleteBoard = async (boardId, userId, boardToken) => {
   deleteBoard = async (boardId, userId) => {
     if ((isNaN(boardId), isNaN(userId))) {
       throw new MakeError(400, '잘못된 형식입니다.');

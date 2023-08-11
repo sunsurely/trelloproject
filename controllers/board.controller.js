@@ -75,13 +75,11 @@ class BoardController {
   modifyBoard = async (req, res, next) => {
     const { name, color, description } = req.body;
     const { boardId } = req.params;
-    const { boardToken } = req.cookies;
     const userId = res.locals.userId;
 
     try {
       const result = await this.boardService.modifyBoard(
         userId,
-        boardToken,
         boardId,
         name,
         color,
@@ -105,12 +103,10 @@ class BoardController {
   deleteBoard = async (req, res, next) => {
     const { boardId } = req.params;
     const userId = res.locals.userId;
-    const { boardToken } = req.cookies;
     try {
       const result = await this.boardService.deleteBoard(
         boardId,
         userId,
-        boardToken,
       );
       return res.status(201).json({ message: '성공적으로 삭제됐습니다.' });
     } catch (err) {
