@@ -58,7 +58,9 @@ class BoardController {
     try {
       const result = await this.boardService.getBoard(boardId, userId);
 
-      return result;
+      return res
+        .status(201)
+        .json({ data: result, message: '보드 불러오기 성공' });
     } catch (err) {
       console.error(`Error in file: ${__filename}`);
       if (err instanceof MakeError) {
@@ -73,13 +75,11 @@ class BoardController {
   modifyBoard = async (req, res, next) => {
     const { name, color, description } = req.body;
     const { boardId } = req.params;
-    const { boardToken } = req.cookies;
     const userId = res.locals.userId;
 
     try {
       const result = await this.boardService.modifyBoard(
         userId,
-        boardToken,
         boardId,
         name,
         color,
@@ -103,12 +103,10 @@ class BoardController {
   deleteBoard = async (req, res, next) => {
     const { boardId } = req.params;
     const userId = res.locals.userId;
-    const { boardToken } = req.cookies;
     try {
       const result = await this.boardService.deleteBoard(
         boardId,
         userId,
-        boardToken,
       );
       return res.status(201).json({ message: '성공적으로 삭제됐습니다.' });
     } catch (err) {
@@ -170,19 +168,42 @@ class BoardController {
 
   modifyBoardGroupMemberPermission = async (req, res, next) => {
     const { boardId } = req.params;
-    const { memberId: userId, permission } = req.body;
+    const { userId, permission } = req.body;
 
     try {
       const result = await this.boardService.modifyBoardGroupMemberPermission(
         boardId,
-        memberId,
+        userId,
         permission,
       );
 
       return res.status(201).json({
-        data: { memberId, permission },
+        data: { memberId: userId, permission },
         message: '멤버의 권한이 수정됐습니다.',
       });
+    } catch (err) {
+      console.error(`Error in file: ${__filename}`);
+      if (err instanceof MakeError) {
+        return res.status(err.code).json({ message: err.message });
+      } else {
+        console.error(err);
+        return res.status(500).json({ message: 'Internal Server Error' });
+      }
+    }
+  };
+
+  deleteBoardGroupMember = async (req, res, next) => {
+    const { boardId } = req.params;
+    const { userId } = req.body;
+
+    try {
+      const result =
+        await this.boardService.boardGroupRepo.deleteBoardGroupMember(
+          boardId,
+          userId,
+        );
+
+      return res.status(201).json({ message: '정상적으로 삭제됐습니다.' });
     } catch (err) {
       console.error(`Error in file: ${__filename}`);
       if (err instanceof MakeError) {

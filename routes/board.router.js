@@ -31,7 +31,7 @@ router.patch(
 router.delete(
   '/:boardId/invitation',
   authorizated,
-  boardController.getBoardGroupList,
+  boardController.deleteBoardGroupMember,
 );
 
 module.exports = router;
