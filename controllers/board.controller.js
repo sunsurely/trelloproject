@@ -118,8 +118,6 @@ class BoardController {
   };
 
   inviteBoardGroupMember = async (req, res, next) => {
-    // email로 초대했을 경우를 상정. email로 초대할 경우 권한 설정 가능
-    // 현재 지정할 수 있는 권한은 readonly와 write
     const { email, permission } = req.body;
     const { boardId } = req.params;
 

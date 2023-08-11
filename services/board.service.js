@@ -3,10 +3,12 @@ const BoardRespotisoty = require('../repositories/board.repository');
 const BoardGroupRepository = require('../repositories/boardGroup.repository');
 const CollaboratorCaching = require('./cache');
 const collaboratorCaching = new CollaboratorCaching();
+const UserService = require('../services/user.service');
 
 class BoardService {
   boardRepo = new BoardRespotisoty();
   boardGroupRepo = new BoardGroupRepository();
+  userService = new UserService();
 
   createBoard = async (userId, name, color, description) => {
     if (isNaN(userId)) {
@@ -114,14 +116,18 @@ class BoardService {
     return result;
   };
 
-  inviteBoardGroupMember = async (boardId, userId, permission = 'readonly') => {
-    if (isNaN(boardId) || isNaN(userId)) {
+  inviteBoardGroupMember = async (boardId, email, permission = 'readonly') => {
+    if (isNaN(boardId) || !email) {
       throw new MakeError(400, '잘못된 형식입니다.');
     }
 
+    const existUser = await this.userService.getUser(email);
+    if (!existUser) {
+      throw new MakeError(404, '존재하지 않는 유저입니다.');
+    }
     const result = await this.boardGroupRepo.inviteBoardGroupMember(
       boardId,
-      userId,
+      existUser.userId,
       permission,
     );
 
