@@ -181,12 +181,10 @@ class BoardController {
         permission,
       );
 
-      return res
-        .status(201)
-        .json({
-          data: { memberId, permission },
-          message: '멤버의 권한이 수정됐습니다.',
-        });
+      return res.status(201).json({
+        data: { memberId, permission },
+        message: '멤버의 권한이 수정됐습니다.',
+      });
     } catch (err) {
       console.error(`Error in file: ${__filename}`);
       if (err instanceof MakeError) {
