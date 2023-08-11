@@ -1,4 +1,6 @@
 const jwt = require('jsonwebtoken');
+const NodeCache = require('node-cache');
+const cache = new NodeCache({ stdTTL: 0, checkperiod: 120 });
 
 exports.authorizated = async (req, res, next) => {
   const { authorization } = req.headers;
@@ -49,5 +51,31 @@ exports.isLoggedIn = async (req, res, next) => {
     console.error(err);
     res.locals.isLoggedIn = false;
     next();
+  }
+};
+
+exports.isInvited = async (req, res, next) => {
+  const userId = res.locals.userId;
+  try {
+    if (isNaN(userId) || userId < 1) {
+      return {
+        status: 400,
+        sucess: false,
+        message: '초대된 유저만 사용가능합니다.',
+      };
+    }
+
+    const invitedUser = cache.get(process.env.invitedKey);
+    if (!invitedUser) {
+      return {
+        status: 400,
+        sucess: false,
+        message: '초대된 유저만 사용가능합니다.',
+      };
+    }
+    next();
+  } catch (err) {
+    console.log(error);
+    res.status(400).json({ errorMessage: '잘못된 접근입니다.' });
   }
 };

@@ -36,7 +36,7 @@ class CardRepo {
       { where: { cardId } },
     );
 
-    return updateCardResult;
+    return updateCardResult[0];
   };
 
   modifyCardPosition = async (positionInfo, t) => {

@@ -1,10 +1,11 @@
 const CardService = require('../services/cards.service');
+const MakeError = require('../utils/makeErrorUtil');
 
 class CardController {
   cardService = new CardService();
 
   createCard = async (req, res) => {
-    const columnId = parseInt(req.params.columnId);
+    const columnId = req.params.columnId;
     const { description, position, deadline, manager } = req.body;
     try {
       const createCardResult = await this.cardService.createCard(
@@ -21,40 +22,49 @@ class CardController {
         createCardResult,
       });
     } catch (err) {
+      if (err instanceof MakeError) {
+        return res.status(err.code).json({ message: err.message });
+      }
       console.error('CardController_createCard', err);
-      res.status(402).json({ error: err });
+      res.status(500).json({ message: 'Server Error' });
     }
   };
 
   getAllCards = async (req, res) => {
     try {
-      const columnId = parseInd(req.params.columnId);
+      const columnId = req.params.columnId;
 
       const getCardsResult = await this.cardService.getAllCards(columnId);
 
       res.status(200).json({ message: '카드조회성공', data: getCardsResult });
     } catch (err) {
-      console.error('CardController_getCards', error);
-      res.status(400).json({ message: error });
+      if (err instanceof MakeError) {
+        return res.status(err.code).json({ message: err.message });
+      }
+      console.error('CardController_getAllCards', err);
+      res.status(500).json({ message: 'Server Error' });
     }
   };
 
   modifyCard = async (req, res) => {
     try {
       const { name, description, deadline, manager } = req.body;
-      const cardId = parseInt(req.params.cardId);
+      const cardId = req.params.cardId;
 
-      const updateCardResult = await this.cardService.modifyCard(
+      await this.cardService.modifyCard(
         cardId,
         name,
         description,
         deadline,
         manager,
       );
-      res.status(201).json({ message: '카드수정성공', updateCardResult });
+      res.status(201).json({ message: '카드수정성공' });
     } catch (err) {
-      console.error('CardController_updateCard', err);
-      res.status(401).json({ message: error });
+      if (err instanceof MakeError) {
+        return res.status(err.code).json({ message: err.message });
+      }
+      console.error('CardController_modifyCard', err);
+      res.status(500).json({ message: 'Server Error' });
     }
   };
 
@@ -65,14 +75,17 @@ class CardController {
       await this.cardService.modifyCardPosition(positionInfos);
       res.status(201).json({ message: '카드 위치이동 성공' });
     } catch (err) {
+      if (err instanceof MakeError) {
+        return res.status(err.code).json({ message: err.message });
+      }
       console.error('CardController_modifyCardPosition', err);
-      res.status(401).json({ message: error });
+      res.status(500).json({ message: 'Server Error' });
     }
   };
 
   deleteCard = async (req, res) => {
     try {
-      const cardId = parseInt(req.params.cardId);
+      const cardId = req.params.cardId;
 
       const deleteCartResult = await this.cardService.deleteCard(cardId);
 
@@ -80,8 +93,11 @@ class CardController {
         .status(201)
         .json({ message: '카드를 삭제했습니다.', data: deleteCartResult });
     } catch (err) {
-      console.error('CardController_deleteCared', err);
-      res.status(401).json({ errorMessage: err });
+      if (err instanceof MakeError) {
+        return res.status(err.code).json({ message: err.message });
+      }
+      console.error('CardController_deleteCard', err);
+      res.status(500).json({ message: 'Server Error' });
     }
   };
 }

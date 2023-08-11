@@ -10,8 +10,16 @@ class CardService {
       if (!columnId) {
         throw new MakeError(400, 'columnId가 존재하지 않습니다.');
       }
+      if (isNaN(columnId) || columnId < 1) {
+        throw new MakeError(400, 'column이 올바른 형식이 아닙니다.');
+      }
       if (!description) {
         throw new MakeError(400, 'description은 필수 입력사항입니다.');
+      }
+      if (position) {
+        if (isNaN(position) || columnId < 1) {
+          throw new MakeError(400, 'position이 올바른 형식이 아닙니다.');
+        }
       }
 
       const createCardResult = await this.cardRepo.createCard(
@@ -24,6 +32,7 @@ class CardService {
       if (!createCardResult) {
         throw new MakeError(402, '카드 등록에 실패했습니다.');
       }
+      return createCardResult;
     } catch (err) {
       console.error('CardService_createCard', err);
       throw err;
@@ -34,6 +43,9 @@ class CardService {
     try {
       if (!columnId) {
         throw new MakeError(400, 'columnId가 존재하지 않습니다.');
+      }
+      if (isNaN(columnId) || columnId < 1) {
+        throw new MakeError(400, 'column이 올바른 형식이 아닙니다.');
       }
       const getCardsResult = await this.cardRepo.getAllCards(columnId);
 
@@ -59,6 +71,9 @@ class CardService {
     try {
       if (!cardId) {
         throw new MakeError(400, 'cardId를 수신받지 못했습니다.');
+      }
+      if (isNaN(cardId) || cardId < 1) {
+        throw new MakeError(400, 'column이 올바른 형식이 아닙니다.');
       }
 
       const updateCardResult = await this.cardRepo.modifyCard(
@@ -114,6 +129,9 @@ class CardService {
     try {
       if (!cardId) {
         throw new MakeError(400, 'cardId를 수신받지 못했습니다.');
+      }
+      if (isNaN(cardId) || cardId < 1) {
+        throw new MakeError(400, 'column이 올바른 형식이 아닙니다.');
       }
       const deleteCardResult = await this.cardRepo.deleteCard(cardId);
       if (!deleteCardResult) {

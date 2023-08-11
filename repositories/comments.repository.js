@@ -17,7 +17,7 @@ class CommentRepo {
       where: { cardId },
       attributes: ['commentId', 'content', 'createdAt'],
     });
-
+    console.log(getCommentsResult);
     return getCommentsResult;
   };
 
