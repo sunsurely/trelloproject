@@ -28,9 +28,18 @@ class BoardGroupRepository {
     return user;
   };
 
-  //   modifyPermission = async (boardId, userId) => {
+  modifyBoardGroupMemberPermission = async (
+    boardId,
+    collaborator,
+    permission,
+  ) => {
+    const result = await BoardGroup.update(
+      { permission },
+      { where: { boardId, collaborator } },
+    );
 
-  //   }
+    return result;
+  };
 }
 
 module.exports = BoardGroupRepository;
