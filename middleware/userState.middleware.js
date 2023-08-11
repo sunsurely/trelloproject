@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
-const NodeCache = require('node-cache');
-const cache = new NodeCache({ stdTTL: 0, checkperiod: 120 });
+const CollaboratorCaching = require('../cache');
+const collaboratorCaching = new CollaboratorCaching();
 
 exports.authorizated = async (req, res, next) => {
   const { authorization } = req.headers;
@@ -65,8 +65,8 @@ exports.isInvited = async (req, res, next) => {
       };
     }
 
-    const invitedUser = cache.get(process.env.invitedKey);
-    if (!invitedUser) {
+    const invited = await collaboratorCaching.getCachedCollaborator(userId);
+    if (!invited) {
       return {
         status: 400,
         sucess: false,
