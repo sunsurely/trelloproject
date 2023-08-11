@@ -5,12 +5,6 @@ class ColumnRepository {
   findOneBoardDataByBoardId = async (boardId) =>
     await Board.findOne({ where: { boardId } });
 
-  // collaborator 확인
-  checkCollaborator = async (boardId, userId) =>
-    await BoardGroup.findOne({
-      where: { boardId, userId },
-    });
-
   // 컬럼 추가
   createColumn = async (boardId, name, position) =>
     await Column.create({ boardId, name, position });

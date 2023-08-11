@@ -34,14 +34,6 @@ class ColumnService {
       throw new MakeError(400, '잘못된 컬럼 위치입니다.');
     }
 
-    const findCollaborator = await this.columnRepository.checkCollaborator(
-      boardId,
-      userId,
-    );
-    if (!findCollaborator) {
-      throw new MakeError(403, '해당 보드에 초대된 회원이 아닙니다.');
-    }
-
     await this.columnRepository.createColumn(boardId, name, position);
     return true;
   };
@@ -57,14 +49,6 @@ class ColumnService {
     );
     if (!findBoardData) {
       throw new MakeError(404, '존재하지 않는 보드입니다.');
-    }
-
-    const findCollaborator = await this.columnRepository.checkCollaborator(
-      boardId,
-      userId,
-    );
-    if (!findCollaborator) {
-      throw new MakeError(403, '해당 보드에 초대된 회원이 아닙니다.');
     }
 
     return await this.columnRepository.getAllColumns(boardId);
@@ -91,14 +75,6 @@ class ColumnService {
       });
     if (!findColumnData) {
       throw new MakeError(404, '존재하지 않는 컬럼입니다.');
-    }
-
-    const findCollaborator = await this.columnRepository.checkCollaborator(
-      boardId,
-      userId,
-    );
-    if (!findCollaborator) {
-      throw new MakeError(403, '해당 보드에 초대된 회원이 아닙니다.');
     }
 
     await this.columnRepository.modifyNameOfColumn(columnId, name);
@@ -131,14 +107,6 @@ class ColumnService {
         });
       if (!findColumnData) {
         throw new MakeError(404, '존재하지 않는 컬럼입니다.');
-      }
-
-      const findCollaborator = await this.columnRepository.checkCollaborator(
-        boardId,
-        userId,
-      );
-      if (!findCollaborator) {
-        throw new MakeError(403, '해당 보드에 초대된 회원이 아닙니다.');
       }
 
       const columnWithNewPosition =
@@ -191,14 +159,6 @@ class ColumnService {
       });
     if (!findColumnData) {
       throw new MakeError(404, '존재하지 않는 컬럼입니다.');
-    }
-
-    const findCollaborator = await this.columnRepository.checkCollaborator(
-      boardId,
-      userId,
-    );
-    if (!findCollaborator) {
-      throw new MakeError(403, '해당 보드에 초대된 회원이 아닙니다.');
     }
 
     await this.columnRepository.deleteColumn(columnId);
