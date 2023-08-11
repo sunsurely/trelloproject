@@ -8,12 +8,9 @@ class BoardService {
   boardGroupRepo = new BoardGroupRepository();
 
   createBoard = async (userId, name, color, description) => {
-    const result = await this.boardRepo.createBoard(
-      userId,
-      name,
-      color,
-      description,
-    );
+    if (isNaN(userId)) {
+      throw new MakeError(400, '잘못된 형식입니다.');
+    }
     if (!name) {
       throw new MakeError(412, '이름이 입력되지 않았습니다.');
     }
@@ -24,6 +21,13 @@ class BoardService {
       throw new MakeError(412, '설명이 입력되지 않았습니다.');
     }
 
+    const result = await this.boardRepo.createBoard(
+      userId,
+      name,
+      color,
+      description,
+    );
+
     if (!result) {
       throw new MakeError(400, '보드 생성에 실패하였습니다.');
     }
@@ -32,52 +36,31 @@ class BoardService {
   };
 
   getBoardList = async (userId) => {
+    if (isNaN(userId)) {
+      throw new MakeError(400, '잘못된 형식입니다.');
+    }
+
     const result = await this.boardRepo.getBoardList(userId);
 
     if (!result) {
       throw new MakeError(500, 'Interval Server Error');
+    }
+    if (result.length <= 0) {
+      throw new MakeError(201, '보드 목록이 비어있습니다.');
     }
 
     return result;
   };
 
   getBoard = async (boardId, userId) => {
+    if (isNaN(userId) || isNaN(boardId)) {
+      throw new MakeError(400, '잘못된 형식입니다.');
+    }
     const result = await this.boardRepo.getBoard(boardId);
     if (!result) {
       throw new MakeError(404, '보드가 존재하지 않습니다.');
     }
 
-    // let permission;
-
-    // 보드 생성한 사람은 owner 권한을 기본적으로 주고 그렇지 않다면 보드 멤버인지 조회
-    // if (result.ownerId === userId) {
-    //   permission = 'owner';
-    // } else {
-    //   const result = await this.boardGroupRepo.getBoardGroupMember(
-    //     boardId,
-    //     userId,
-    //   );
-    //   // 보드 멤버가 아닐 경우 기본적으로 권한을 읽기 전용으로 두고 그 사람을 보드 멤버로 추가
-    //   if (!result) {
-    //     permission = 'readonly';
-    //     await this.boardGroupRepo.inviteBoardGroupMember(
-    //       boardId,
-    //       userId,
-    //       permission,
-    //     );
-    //   } else {
-    //     // 기존 보드 멤버일 경우 기존에 사용하던 권한을 그대로 사용
-    //     permission = result.permission;
-    //   }
-    // }
-    // 보드id와 그에 대한 권한을 담은 토큰 발행
-    // const token = jwt.sign(
-    //   { tokenBoardId: boardId, permission },
-    //   process.env.COOKIE_SECRET,
-    // );
-    // console.log('getboard: ', permission);
-
-    // return { boardContents: result, token };
     return result;
   };
 
@@ -90,29 +73,15 @@ class BoardService {
     color,
     description,
   ) => {
+    if (isNaN(userId) || isNaN(boardId) || !name || !color || !description) {
+      throw new MakeError(400, '잘못된 형식입니다.');
+    }
+
     const existBoard = await this.boardRepo.getBoard(boardId);
 
     if (!existBoard) {
       throw new MakeError(404, '존재하지 않는 보드입니다.');
     }
-    // 토큰 검사해서 사용자가 접근한 boardId와 권한 정보 확인
-    // const { tokenBoardId, permission } = jwt.verify(
-    //   boardToken,
-    //   process.env.COOKIE_SECRET,
-    // );
-
-    // console.log(`boardId: ${boardId}, tokenBoardId: ${tokenBoardId}, permission: ${permission}`);
-    // 현재 보드 아이디와 페이지 접속해서 받은 토큰의 보드 아이디가 다를 경우 비정상적인 접근으로 생각
-    // if (tokenBoardId !== boardId) {
-    //   throw new MakeError(403, '명령 수행 권한이 없습니다.');
-    // }
-
-    // // 보드 만든이가 아니면 보드 수정에 권한을 둠
-    // if (existBoard.ownerId !== userId) {
-    //   if (permission === 'readonly') {
-    //     throw new MakeError(403, '수정 권한이 없습니다.');
-    //   }
-    // }
 
     const result = await this.boardRepo.modifyBoard(
       boardId,
@@ -122,28 +91,17 @@ class BoardService {
     );
 
     if (!result) {
-      throw new MakeError(400, '업데이트가 실패하였습니다.');
+      throw new MakeError(400, '업데이트 실패하였습니다.');
     }
 
     return result;
   };
 
-  deleteBoard = async (boardId, userId, boardToken) => {
-    // // 토큰 정보에서 보드 아이디와 권한 확인
-    // const { tokenBoardId, permission } = jwt.verify(
-    //   boardToken,
-    //   process.env.COOKIE_SECRET,
-    // );
-
-    // console.log(permission);
-    // // 보드 아이디가 다르면 삭제 못하게 함
-    // if (tokenBoardId !== boardId) {
-    //   throw new MakeError(403, '명령 수행 권한이 없습니다.');
-    // }
-    // // 보드 만든이가 아니면 삭제 못하게 함
-    // if (permission !== 'owner') {
-    //   throw new MakeError(403, '삭제 권한이 없습니다.');
-    // }
+  //   deleteBoard = async (boardId, userId, boardToken) => {
+  deleteBoard = async (boardId, userId) => {
+    if ((isNaN(boardId), isNaN(userId))) {
+      throw new MakeError(400, '잘못된 형식입니다.');
+    }
     const existBoard = await this.boardRepo.getBoard(boardId);
     if (!existBoard) {
       throw new MakeError(404, '존재하지 않는 보드입니다.');
@@ -162,11 +120,11 @@ class BoardService {
     return result;
   };
 
-  //   createBoardGroupMember = async (boardId, userId, permission = "readonly") => {
-  //     const result = await this.boardGroupRepo.createBoardGroupMember(boardId, userId, permission)
-
-  //   }
   inviteBoardGroupMember = async (boardId, userId, permission = 'readonly') => {
+    if (isNaN(boardId) || isNaN(userId)) {
+      throw new MakeError(400, '잘못된 형식입니다.');
+    }
+
     const result = await this.boardGroupRepo.inviteBoardGroupMember(
       boardId,
       userId,
@@ -181,8 +139,11 @@ class BoardService {
   };
 
   getBoardGroupList = async (boardId) => {
-    const result = await this.boardGroupRepo.getBoardGroupList(boardId);
+    if (isNaN(boardId)) {
+      throw new MakeError(400, '잘못된 형식입니다.');
+    }
 
+    const result = await this.boardGroupRepo.getBoardGroupList(boardId);
     if (result.length <= 0) {
       throw new MakeError(200, '멤버가 존재하지 않습니다.');
     }
@@ -190,16 +151,22 @@ class BoardService {
     return result;
   };
 
-  //   getBoardGroupMember = async (boardId, userId) => {
-  //     const result = await this.boardGroupRepo.getBoardGroupMember(
-  //       boardId,
-  //       userId,
-  //     );
+  modifyBoardGroupMemberPermission = async (boardId, memberId, permission) => {
+    if (isNaN(boardId) || isNaN(userId) || permission) {
+      throw new MakeError(400, '잘못된 형식입니다.');
+    }
 
-  //   };
+    const result = await this.boardGroupRepo.modifyBoardGroupMemberPermission(
+      boardId,
+      userId,
+      permission,
+    );
 
-  modifyPermission = async (boardId, userId) => {
-    // const result = await this.boardGroupRepo.modifyPermission(boardId, userId);
+    if (!result) {
+      throw new MakeError(400, '수정이 실패하였습니다.');
+    }
+
+    return result;
   };
 
   deleteBoardGroupMember = async (boardId, userId) => {
