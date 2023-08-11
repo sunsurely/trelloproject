@@ -3,6 +3,9 @@ const cookieParser = require('cookie-parser');
 const morgan = require('morgan');
 const path = require('path');
 
+// const CollaboratorCaching = require('./cache');
+// const collaboratorCaching = new CollaboratorCaching();
+
 const app = express();
 require('dotenv').config();
 
@@ -43,5 +46,6 @@ app.use((err, req, res, next) => {
 });
 
 app.listen(app.get('port'), () => {
+  // collaboratorCaching.setCachedCollaborators();
   console.log(app.get('port'), '번 포트에서 대기 중');
 });
