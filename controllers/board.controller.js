@@ -54,13 +54,11 @@ class BoardController {
   getBoard = async (req, res, next) => {
     const { boardId } = req.params;
     const userId = res.locals.userId;
+
     try {
       const result = await this.boardService.getBoard(boardId, userId);
 
-      return res.cookie('boardToken', result.token).status(201).json({
-        data: result.boardContents,
-        message: '보드 불러오기 성공',
-      });
+      return result;
     } catch (err) {
       console.error(`Error in file: ${__filename}`);
       if (err instanceof MakeError) {
@@ -181,12 +179,10 @@ class BoardController {
         permission,
       );
 
-      return res
-        .status(201)
-        .json({
-          data: { memberId, permission },
-          message: '멤버의 권한이 수정됐습니다.',
-        });
+      return res.status(201).json({
+        data: { memberId, permission },
+        message: '멤버의 권한이 수정됐습니다.',
+      });
     } catch (err) {
       console.error(`Error in file: ${__filename}`);
       if (err instanceof MakeError) {
