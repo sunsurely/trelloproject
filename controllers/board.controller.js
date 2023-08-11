@@ -104,10 +104,7 @@ class BoardController {
     const { boardId } = req.params;
     const userId = res.locals.userId;
     try {
-      const result = await this.boardService.deleteBoard(
-        boardId,
-        userId,
-      );
+      const result = await this.boardService.deleteBoard(boardId, userId);
       return res.status(201).json({ message: '성공적으로 삭제됐습니다.' });
     } catch (err) {
       console.error(`Error in file: ${__filename}`);

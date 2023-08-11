@@ -1,7 +1,8 @@
 const MakeError = require('../utils/makeErrorUtil');
 const BoardRespotisoty = require('../repositories/board.repository');
 const BoardGroupRepository = require('../repositories/boardGroup.repository');
-const jwt = require('jsonwebtoken');
+const CollaboratorCaching = require('./cache');
+const collaboratorCaching = new CollaboratorCaching();
 
 class BoardService {
   boardRepo = new BoardRespotisoty();
@@ -53,6 +54,7 @@ class BoardService {
   };
 
   getBoard = async (boardId, userId) => {
+    collaboratorCaching.setCachedCollaborators(boardId);
     if (isNaN(userId) || isNaN(boardId)) {
       throw new MakeError(400, '잘못된 형식입니다.');
     }
@@ -65,13 +67,7 @@ class BoardService {
   };
 
   // 보드를 수정할 때는 cache를 사용하는게 어떨까?
-  modifyBoard = async (
-    userId,
-    boardId,
-    name,
-    color,
-    description,
-  ) => {
+  modifyBoard = async (userId, boardId, name, color, description) => {
     if (isNaN(userId) || isNaN(boardId) || !name || !color || !description) {
       throw new MakeError(400, '잘못된 형식입니다.');
     }
