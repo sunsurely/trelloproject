@@ -28,15 +28,19 @@ class BoardGroupRepository {
     return user;
   };
 
-  modifyBoardGroupMemberPermission = async (
-    boardId,
-    collaborator,
-    permission,
-  ) => {
+  modifyBoardGroupMemberPermission = async (boardId, userId, permission) => {
     const result = await BoardGroup.update(
       { permission },
-      { where: { boardId, collaborator } },
+      { where: { boardId, collaborator: userId } },
     );
+
+    return result;
+  };
+
+  deleteBoardGroupMember = async (boardId, userId) => {
+    const result = await BoardGroup.destroy({
+      where: { boardId, collaborator: userId },
+    });
 
     return result;
   };
