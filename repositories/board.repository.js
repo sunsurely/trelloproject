@@ -44,8 +44,6 @@ class BoardRepository {
 
   // 보드 정보 수정하는 기능
   modifyBoard = async (id, name, color, description) => {
-    // findByPk를 이용해서 데이터가 있는지 없는지 확인하는 것이 좋을까?
-    // 아니면 db 부담을 줄이기 위해 굳이 없는 것은 신경 쓸 필요가 없을까?
     const result = await Board.update(
       { name, color, description },
       {

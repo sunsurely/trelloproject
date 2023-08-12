@@ -54,7 +54,7 @@ exports.isLoggedIn = async (req, res, next) => {
   }
 };
 
-exports.isInvitedByPermission = (permission) => {
+exports.hasMinimumPermission = (permission) => {
   const isInvited = async (req, res, next) => {
     const userId = res.locals.userId;
     try {
