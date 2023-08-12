@@ -3,12 +3,25 @@ const BoardGroup = require('../models/boardGroup');
 // board 테이블에 url 속성도 넣을까?
 class BoardGroupRepository {
   // 보드에 멤버로 참여시키는 기능
-  inviteBoardGroupMember = async (boardId, userId, permission) => {
-    const result = await BoardGroup.create({
-      boardId,
-      collaborator: userId,
-      permission,
-    });
+  inviteBoardGroupMember = async (boardId, userId, permission, t) => {
+    let result;
+    console.log(`boardId: ${boardId}`);
+    if (!t) {
+      result = await BoardGroup.create({
+        boardId,
+        collaborator: userId,
+        permission,
+      });
+    } else {
+      result = await BoardGroup.create(
+        {
+          boardId,
+          collaborator: userId,
+          permission,
+        },
+        { transaction: t },
+      );
+    }
 
     return result;
   };
