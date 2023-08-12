@@ -18,7 +18,6 @@ class CardRepo {
       where: { columnId },
       attributes: [
         'cardId',
-        'name',
         'description',
         'position',
         'deadline',
@@ -32,7 +31,7 @@ class CardRepo {
 
   modifyCard = async (cardId, name, description, deadline, manager) => {
     const updateCardResult = await Card.update(
-      { name, description, deadline, manager },
+      { description, deadline, manager },
       { where: { cardId } },
     );
 

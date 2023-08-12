@@ -1,7 +1,7 @@
 const MakeError = require('../utils/makeErrorUtil');
 const BoardRespotisoty = require('../repositories/board.repository');
 const BoardGroupRepository = require('../repositories/boardGroup.repository');
-const CollaboratorCaching = require('./cache');
+const CollaboratorCaching = require('../cache');
 const collaboratorCaching = new CollaboratorCaching();
 const UserService = require('../services/user.service');
 

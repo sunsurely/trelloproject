@@ -8,7 +8,6 @@ class CommentRepo {
       cardId,
       content,
     });
-
     return createCardResult;
   };
 
@@ -17,7 +16,6 @@ class CommentRepo {
       where: { cardId },
       attributes: ['commentId', 'content', 'createdAt'],
     });
-    console.log(getCommentsResult);
     return getCommentsResult;
   };
 
@@ -34,8 +32,7 @@ class CommentRepo {
     const deleteCommentResult = await Comment.destroy({
       where: { commentId, userId },
     });
-
-    return deleteCommentResult[0];
+    return deleteCommentResult;
   };
 }
 

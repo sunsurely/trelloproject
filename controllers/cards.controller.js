@@ -51,13 +51,7 @@ class CardController {
       const { name, description, deadline, manager } = req.body;
       const cardId = req.params.cardId;
 
-      await this.cardService.modifyCard(
-        cardId,
-        name,
-        description,
-        deadline,
-        manager,
-      );
+      await this.cardService.modifyCard(cardId, description, deadline, manager);
       res.status(201).json({ message: '카드수정성공' });
     } catch (err) {
       if (err instanceof MakeError) {
@@ -70,8 +64,7 @@ class CardController {
 
   modifyCardPosition = async (req, res) => {
     try {
-      const { positionInfos } = req.body;
-
+      const positionInfos = req.body;
       await this.cardService.modifyCardPosition(positionInfos);
       res.status(201).json({ message: '카드 위치이동 성공' });
     } catch (err) {

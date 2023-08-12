@@ -1,5 +1,5 @@
 const CommentService = require('../services/comments.service');
-
+const MakeError = require('../utils/makeErrorUtil');
 class CommentController {
   commentService = new CommentService();
 
