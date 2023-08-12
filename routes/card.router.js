@@ -1,13 +1,34 @@
 const express = require('express');
 const router = express.Router();
 const CardController = require('../controllers/cards.controller');
+const {
+  isInvitedByPermission,
+  authorizated,
+} = require('../middleware/userState.middleware');
 
 const cardController = new CardController();
 
-router.post('/:columnId/cards', cardController.createCard);
-router.get('/:columnId/cards', cardController.getAllCards);
-router.put('/columnId/cards/:cardId', cardController.modifyCard);
-router.put('/column/cards/:cardId/position', cardController.modifyCardPosition);
-router.delete('/columnId/cards/:cardId', cardController.deleteCard);
+router.post(
+  '/column/:columnId/cards',
+  authorizated,
+  isInvitedByPermission('write'),
+  cardController.createCard,
+);
+router.get('/column/:columnId/cards', authorizated, cardController.getAllCards);
+router.put(
+  '/column/columnId/cards/:cardId',
+  authorizated,
+  cardController.modifyCard,
+);
+router.put(
+  '/column/cards/:cardId/position',
+  authorizated,
+  cardController.modifyCardPosition,
+);
+router.delete(
+  '/column/columnId/cards/:cardId',
+  authorizated,
+  cardController.deleteCard,
+);
 
 module.exports = router;

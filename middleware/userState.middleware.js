@@ -59,20 +59,17 @@ exports.isInvitedByPermission = (permission) => {
     const userId = res.locals.userId;
     try {
       if (isNaN(userId) || userId < 1) {
-        return {
-          status: 400,
-          sucess: false,
-          message: '초대된 유저만 사용가능합니다.',
-        };
+        return res
+          .status(400)
+          .json({ sucess: false, message: '초대된 유저만 사용가능합니다.' });
       }
 
       const invited = await collaboratorCaching.getCachedCollaborator(userId);
       if (!invited) {
-        return {
-          status: 400,
-          sucess: false,
-          message: '초대된 유저만 사용가능합니다.',
-        };
+        console.log(invited);
+        return res
+          .status(400)
+          .json({ sucess: false, message: '초대된 유저만 사용가능합니다.' });
       }
 
       const grade = {
@@ -81,12 +78,11 @@ exports.isInvitedByPermission = (permission) => {
         readonly: 1,
       };
 
-      const permission = invited.permission;
-      if (permission >= `${grade[permission]}`) {
+      if (invited.permission >= `${grade[permission]}`) {
         next();
       }
     } catch (err) {
-      console.error(error);
+      console.error(err);
       res.status(400).json({ errorMessage: '잘못된 접근입니다.' });
     }
   };

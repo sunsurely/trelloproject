@@ -1,7 +1,7 @@
 const nodeCache = require('node-cache');
 const { BoardGroup } = require('./models');
 
-const cache = new nodeCache({ stdTTL: 0, checkperiod: 600 });
+const cache = new nodeCache({ stdTTL: 1000, checkperiod: 600 });
 
 class CollaboratorCaching {
   setCachedCollaborators = async (boardId) => {
@@ -9,6 +9,7 @@ class CollaboratorCaching {
       const collaborators = await BoardGroup.findAll({
         where: { boardId },
       });
+
       for (const collaborator of collaborators) {
         cache.set(`cacheKey${collaborator.collaborator}`, collaborator);
       }
@@ -22,6 +23,7 @@ class CollaboratorCaching {
   getCachedCollaborator = (collaborator) => {
     try {
       const cachedCollaborator = cache.get(`cacheKey${collaborator}`);
+
       console.log('collaborator 데이터 GET 성공');
       return cachedCollaborator;
     } catch (err) {
