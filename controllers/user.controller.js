@@ -1,5 +1,9 @@
 const UserService = require('../services/user.service');
+<<<<<<< HEAD
 const { catchError } = require('../utils/catchErrorUtil');
+=======
+const MakeError = require('../utils/makeErrorUtil');
+>>>>>>> a8fd3a494a76e60e15d9f4b85dad9634215af6dc
 
 class UserController {
   userService = new UserService();
@@ -16,8 +20,17 @@ class UserController {
       );
 
       return res.status(201).json({ success: true, data: createUserResult });
+<<<<<<< HEAD
     } catch (error) {
       catchError(err, 'userController_createUser');
+=======
+    } catch (err) {
+      if (err instanceof MakeError) {
+        return res.status(err.code).json({ message: err.message });
+      }
+      console.error('UserController_createUser', err);
+      res.status(500).json({ message: 'Server Error' });
+>>>>>>> a8fd3a494a76e60e15d9f4b85dad9634215af6dc
     }
   };
 
