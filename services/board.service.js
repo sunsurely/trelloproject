@@ -12,6 +12,7 @@ class BoardService {
   boardGroupRepo = new BoardGroupRepository();
   userService = new UserService();
 
+  // 보드 생성
   createBoard = async (userId, name, color, description) => {
     if (isNaN(userId)) {
       throw new MakeError(400, '잘못된 형식입니다.');
@@ -26,6 +27,7 @@ class BoardService {
       throw new MakeError(412, '설명이 입력되지 않았습니다.');
     }
 
+    // 보드를 생성할 때 멤버 테이블에 보드 생성자의 정보를 넣기 때문에 트랜잭션을 사용함
     const t = await sequelize.transaction({
       isolationLevel: Transaction.ISOLATION_LEVELS.READ_COMMITTED,
     });
@@ -37,10 +39,7 @@ class BoardService {
         description,
         t,
       );
-      console.log('🚗🚗🚗🚗🚗🚗🚗🚗');
-      // console.log(resultForcreateBoard);
-      //   const board = await this.boardRepo.getBoard(userId, t);
-      console.log(resultForcreateBoard.boardId);
+
       const boardId = resultForcreateBoard.boardId;
       const resultInviteMember =
         await this.boardGroupRepo.inviteBoardGroupMember(
@@ -49,7 +48,7 @@ class BoardService {
           'owner',
           t,
         );
-
+      // 트랜잭션 수행에 실패 시 rollback 시키기 위한 장치
       if (!resultForcreateBoard || !resultInviteMember) {
         throw new MakeError(402, 'position 수정에 실패했습니다.');
       }
@@ -62,21 +61,9 @@ class BoardService {
       await t.rollback();
       throw err;
     }
-
-    // const result = await this.boardRepo.createBoard(
-    //   userId,
-    //   name,
-    //   color,
-    //   description,
-    // );
-
-    // if (!result) {
-    //   throw new MakeError(400, '보드 생성에 실패하였습니다.');
-    // }
-
-    return result;
   };
 
+  // 보드 목록 조회
   getBoardList = async (userId) => {
     if (isNaN(userId)) {
       throw new MakeError(400, '잘못된 형식입니다.');
@@ -94,6 +81,7 @@ class BoardService {
     return result;
   };
 
+  // 보드 조회(접속?)
   getBoard = async (boardId, userId) => {
     collaboratorCaching.setCachedCollaborators(boardId);
     if (isNaN(userId) || isNaN(boardId)) {
@@ -107,7 +95,7 @@ class BoardService {
     return result;
   };
 
-  // 보드를 수정할 때는 cache를 사용하는게 어떨까?
+  // 보드 수정
   modifyBoard = async (userId, boardId, name, color, description) => {
     if (isNaN(userId) || isNaN(boardId) || !name || !color || !description) {
       throw new MakeError(400, '잘못된 형식입니다.');
@@ -133,6 +121,7 @@ class BoardService {
     return result;
   };
 
+  // 보드 삭제
   deleteBoard = async (boardId, userId) => {
     if ((isNaN(boardId), isNaN(userId))) {
       throw new MakeError(400, '잘못된 형식입니다.');
@@ -155,6 +144,7 @@ class BoardService {
     return result;
   };
 
+  // 보드에 멤버 초대
   inviteBoardGroupMember = async (boardId, email, permission = 'readonly') => {
     if (isNaN(boardId) || !email) {
       throw new MakeError(400, '잘못된 형식입니다.');
@@ -177,6 +167,7 @@ class BoardService {
     return result;
   };
 
+  // 보드 멤버 리스트 보여주기
   getBoardGroupList = async (boardId) => {
     if (isNaN(boardId)) {
       throw new MakeError(400, '잘못된 형식입니다.');
@@ -190,6 +181,7 @@ class BoardService {
     return result;
   };
 
+  // 보드 멤버 권한 수정
   modifyBoardGroupMemberPermission = async (boardId, userId, permission) => {
     if (isNaN(boardId) || isNaN(userId) || permission) {
       throw new MakeError(400, '잘못된 형식입니다.');
@@ -208,6 +200,7 @@ class BoardService {
     return result;
   };
 
+  // 보드 멤버 삭제
   deleteBoardGroupMember = async (boardId, userId) => {
     if (isNaN(boardId) || isNaN(userId)) {
       throw new MakeError(400, '잘못된 형식입니다.');

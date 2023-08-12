@@ -25,13 +25,13 @@ class BoardController {
       console.error(`Error in file: ${__filename}`);
       if (err instanceof MakeError) {
         return res.status(err.code).json({ message: err.message });
-      } else {
-        console.error(err);
-        return res.status(500).json({ message: 'Internal Server Error' });
       }
+      console.error(err);
+      return res.status(500).json({ message: 'Internal Server Error' });
     }
   };
 
+  // 보드 목록 조회
   getBoardList = async (req, res, next) => {
     const userId = res.locals.userId;
     try {
@@ -41,16 +41,16 @@ class BoardController {
         .status(201)
         .json({ data: result, message: '보드 목록 불러오기 성공' });
     } catch (err) {
-      console.error(`Error in file: ${__filename}`);
+      console.error(`Error in file: ${__filename}, getBoardList()`);
       if (err instanceof MakeError) {
         return res.status(err.code).json({ message: err.message });
-      } else {
-        console.error(err);
-        return res.status(500).json({ message: 'Internal Server Error' });
       }
+      console.error(err);
+      return res.status(500).json({ message: 'Internal Server Error' });
     }
   };
 
+  // 보드 조회
   getBoard = async (req, res, next) => {
     const { boardId } = req.params;
     const userId = res.locals.userId;
@@ -65,13 +65,13 @@ class BoardController {
       console.error(`Error in file: ${__filename}`);
       if (err instanceof MakeError) {
         return res.status(err.code).json({ message: err.message });
-      } else {
-        console.error(err);
-        return res.status(500).json({ message: 'Internal Server Error' });
       }
+      console.error(err);
+      return res.status(500).json({ message: 'Internal Server Error' });
     }
   };
 
+  // 보드 수정
   modifyBoard = async (req, res, next) => {
     const { name, color, description } = req.body;
     const { boardId } = req.params;
@@ -93,13 +93,13 @@ class BoardController {
       console.error(`Error in file: ${__filename}`);
       if (err instanceof MakeError) {
         return res.status(err.code).json({ message: err.message });
-      } else {
-        console.error(err);
-        return res.status(500).json({ message: 'Internal Server Error' });
       }
+      console.error(err);
+      return res.status(500).json({ message: 'Internal Server Error' });
     }
   };
 
+  // 보드 삭제
   deleteBoard = async (req, res, next) => {
     const { boardId } = req.params;
     const userId = res.locals.userId;
@@ -110,18 +110,19 @@ class BoardController {
       console.error(`Error in file: ${__filename}`);
       if (err instanceof MakeError) {
         return res.status(err.code).json({ message: err.message });
-      } else {
-        console.error(err);
-        return res.status(500).json({ message: 'Internal Server Error' });
       }
+      console.error(err);
+      return res.status(500).json({ message: 'Internal Server Error' });
     }
   };
 
+  // 보드 멤버 초대
   inviteBoardGroupMember = async (req, res, next) => {
     const { email, permission } = req.body;
     const { boardId } = req.params;
 
     try {
+      // 해당 보드에 body로 부터 받은 이메일(email)과 권한(permission) 정보를 기반으로 보드 멤버를 만들 수 있음
       const result = await this.boardService.inviteBoardGroupMember(
         boardId,
         email,
@@ -133,13 +134,13 @@ class BoardController {
       console.error(`Error in file: ${__filename}`);
       if (err instanceof MakeError) {
         return res.status(err.code).json({ message: err.message });
-      } else {
-        console.error(err);
-        return res.status(500).json({ message: 'Internal Server Error' });
       }
+      console.error(err);
+      return res.status(500).json({ message: 'Internal Server Error' });
     }
   };
 
+  // 보드 멤버 조회
   getBoardGroupList = async (req, res, next) => {
     const { boardId } = req.params;
 
@@ -154,13 +155,13 @@ class BoardController {
       console.error(`Error in file: ${__filename}`);
       if (err instanceof MakeError) {
         return res.status(err.code).json({ message: err.message });
-      } else {
-        console.error(err);
-        return res.status(500).json({ message: 'Internal Server Error' });
       }
+      console.error(err);
+      return res.status(500).json({ message: 'Internal Server Error' });
     }
   };
 
+  // 보드 멤버 권한 수정
   modifyBoardGroupMemberPermission = async (req, res, next) => {
     const { boardId } = req.params;
     const { userId, permission } = req.body;
@@ -180,13 +181,13 @@ class BoardController {
       console.error(`Error in file: ${__filename}`);
       if (err instanceof MakeError) {
         return res.status(err.code).json({ message: err.message });
-      } else {
-        console.error(err);
-        return res.status(500).json({ message: 'Internal Server Error' });
       }
+      console.error(err);
+      return res.status(500).json({ message: 'Internal Server Error' });
     }
   };
 
+  // 보드 멤버 삭제
   deleteBoardGroupMember = async (req, res, next) => {
     const { boardId } = req.params;
     const { userId } = req.body;
@@ -203,10 +204,9 @@ class BoardController {
       console.error(`Error in file: ${__filename}`);
       if (err instanceof MakeError) {
         return res.status(err.code).json({ message: err.message });
-      } else {
-        console.error(err);
-        return res.status(500).json({ message: 'Internal Server Error' });
       }
+      console.error(err);
+      return res.status(500).json({ message: 'Internal Server Error' });
     }
   };
 }
