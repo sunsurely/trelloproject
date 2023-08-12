@@ -4,6 +4,8 @@ const BoardGroupRepository = require('../repositories/boardGroup.repository');
 const CollaboratorCaching = require('../cache');
 const collaboratorCaching = new CollaboratorCaching();
 const UserService = require('../services/user.service');
+const { Transaction } = require('sequelize');
+const { sequelize } = require('../models');
 
 class BoardService {
   boardRepo = new BoardRespotisoty();
@@ -24,16 +26,53 @@ class BoardService {
       throw new MakeError(412, '설명이 입력되지 않았습니다.');
     }
 
-    const result = await this.boardRepo.createBoard(
-      userId,
-      name,
-      color,
-      description,
-    );
+    const t = await sequelize.transaction({
+      isolationLevel: Transaction.ISOLATION_LEVELS.READ_COMMITTED,
+    });
+    try {
+      const resultForcreateBoard = await this.boardRepo.createBoard(
+        userId,
+        name,
+        color,
+        description,
+        t,
+      );
+      console.log('🚗🚗🚗🚗🚗🚗🚗🚗');
+      // console.log(resultForcreateBoard);
+      //   const board = await this.boardRepo.getBoard(userId, t);
+      console.log(resultForcreateBoard.boardId);
+      const boardId = resultForcreateBoard.boardId;
+      const resultInviteMember =
+        await this.boardGroupRepo.inviteBoardGroupMember(
+          boardId,
+          userId,
+          'owner',
+          t,
+        );
 
-    if (!result) {
-      throw new MakeError(400, '보드 생성에 실패하였습니다.');
+      if (!resultForcreateBoard || !resultInviteMember) {
+        throw new MakeError(402, 'position 수정에 실패했습니다.');
+      }
+
+      await t.commit();
+
+      return resultForcreateBoard;
+    } catch (err) {
+      console.error('Board creation error', err);
+      await t.rollback();
+      throw err;
     }
+
+    // const result = await this.boardRepo.createBoard(
+    //   userId,
+    //   name,
+    //   color,
+    //   description,
+    // );
+
+    // if (!result) {
+    //   throw new MakeError(400, '보드 생성에 실패하였습니다.');
+    // }
 
     return result;
   };

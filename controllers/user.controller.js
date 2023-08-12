@@ -1,4 +1,5 @@
 const UserService = require('../services/user.service');
+const MakeError = require('../utils/makeErrorUtil');
 
 class UserController {
   userService = new UserService();
@@ -15,7 +16,7 @@ class UserController {
       );
 
       return res.status(201).json({ success: true, data: createUserResult });
-    } catch (error) {
+    } catch (err) {
       if (err instanceof MakeError) {
         return res.status(err.code).json({ message: err.message });
       }
