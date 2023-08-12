@@ -75,15 +75,20 @@ exports.isInvitedByPermission = (permission) => {
         };
       }
 
+      const grade = {
+        owner: 3,
+        write: 2,
+        readonly: 1,
+      };
+
       const permission = invited.permission;
-      if (permission === `owner`) {
+      if (permission >= `${grade[permission]}`) {
         next();
       }
     } catch (err) {
-      console.log(error);
+      console.error(error);
       res.status(400).json({ errorMessage: '잘못된 접근입니다.' });
     }
   };
-
   return isInvited;
 };
