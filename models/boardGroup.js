@@ -19,7 +19,7 @@ class BoardGroup extends Sequelize.Model {
           allowNull: false,
         },
         permission: {
-          type: Sequelize.ENUM('write', 'readonly'),
+          type: Sequelize.ENUM('owner', 'write', 'readonly'),
           allowNull: false,
           defaultValue: 'readonly',
         },

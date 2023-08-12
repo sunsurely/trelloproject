@@ -1,5 +1,5 @@
 const CommentService = require('../services/comments.service');
-const MakeError = require('../utils/makeErrorUtil');
+const { catchError } = require('../utils/catchErrorUtil');
 class CommentController {
   commentService = new CommentService();
 
@@ -14,11 +14,7 @@ class CommentController {
         .status(201)
         .json({ sucess: true, message: '댓글등록에 성공했습니다.' });
     } catch (err) {
-      if (err instanceof MakeError) {
-        return res.status(err.code).json({ message: err.message });
-      }
-      console.error('CommentController_createComment', err);
-      res.status(500).json({ message: 'Server Error' });
+      catchError(err, 'commentController_createComment');
     }
   };
 
@@ -33,11 +29,7 @@ class CommentController {
         .status(200)
         .json({ message: '댓글조회성공', data: getAllCommentsResult });
     } catch (err) {
-      if (err instanceof MakeError) {
-        return res.status(err.code).json({ message: err.message });
-      }
-      console.error('CommentController_getAllComments', err);
-      res.status(500).json({ message: 'Server Error' });
+      catchError(err, 'commentController_getAllComment');
     }
   };
 
@@ -48,11 +40,7 @@ class CommentController {
       const getCommentResult = await this.commentService.getComment(commentId);
       res.status(200).json({ message: '댓글조회성공', getCommentResult });
     } catch (err) {
-      if (err instanceof MakeError) {
-        return res.status(err.code).json({ message: err.message });
-      }
-      console.error('CommentController_getComment', err);
-      res.status(500).json({ message: 'Server Error' });
+      catchError(err, 'getComment');
     }
   };
 
@@ -70,11 +58,7 @@ class CommentController {
         .status(201)
         .json({ message: '댓글을 삭제했습니다.', data: deleteCommentResult });
     } catch (err) {
-      if (err instanceof MakeError) {
-        return res.status(err.code).json({ message: err.message });
-      }
-      console.error('CommentController_deleteComment', err);
-      res.status(500).json({ message: 'Server Error' });
+      catchError(err, 'CardController_deleteDeleteComment');
     }
   };
 }

@@ -1,5 +1,5 @@
 const CardService = require('../services/cards.service');
-const MakeError = require('../utils/makeErrorUtil');
+const { catchError } = require('../utils/catchErrorUtil');
 
 class CardController {
   cardService = new CardService();
@@ -22,11 +22,7 @@ class CardController {
         createCardResult,
       });
     } catch (err) {
-      if (err instanceof MakeError) {
-        return res.status(err.code).json({ message: err.message });
-      }
-      console.error('CardController_createCard', err);
-      res.status(500).json({ message: 'Server Error' });
+      catchError(err, 'CardController_createCard');
     }
   };
 
@@ -38,11 +34,7 @@ class CardController {
 
       res.status(200).json({ message: '카드조회성공', data: getCardsResult });
     } catch (err) {
-      if (err instanceof MakeError) {
-        return res.status(err.code).json({ message: err.message });
-      }
-      console.error('CardController_getAllCards', err);
-      res.status(500).json({ message: 'Server Error' });
+      catchError(err, 'CardController_getAllCard');
     }
   };
 
@@ -54,11 +46,7 @@ class CardController {
       await this.cardService.modifyCard(cardId, description, deadline, manager);
       res.status(201).json({ message: '카드수정성공' });
     } catch (err) {
-      if (err instanceof MakeError) {
-        return res.status(err.code).json({ message: err.message });
-      }
-      console.error('CardController_modifyCard', err);
-      res.status(500).json({ message: 'Server Error' });
+      catchError(err, 'CardController_modifyCard');
     }
   };
 
@@ -68,11 +56,7 @@ class CardController {
       await this.cardService.modifyCardPosition(positionInfos);
       res.status(201).json({ message: '카드 위치이동 성공' });
     } catch (err) {
-      if (err instanceof MakeError) {
-        return res.status(err.code).json({ message: err.message });
-      }
-      console.error('CardController_modifyCardPosition', err);
-      res.status(500).json({ message: 'Server Error' });
+      catchError(err, 'CardController_deleteCardPosition');
     }
   };
 
@@ -82,15 +66,12 @@ class CardController {
 
       const deleteCartResult = await this.cardService.deleteCard(cardId);
 
-      res
-        .status(201)
-        .json({ message: '카드를 삭제했습니다.', data: deleteCartResult });
+      res.status(201).json({
+        message: '카드를 삭제했습니다.',
+        data: deleteCartResult,
+      });
     } catch (err) {
-      if (err instanceof MakeError) {
-        return res.status(err.code).json({ message: err.message });
-      }
-      console.error('CardController_deleteCard', err);
-      res.status(500).json({ message: 'Server Error' });
+      catchError(err, 'CardController_deleteCard');
     }
   };
 }

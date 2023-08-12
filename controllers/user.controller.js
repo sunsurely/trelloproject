@@ -1,4 +1,5 @@
 const UserService = require('../services/user.service');
+const { catchError } = require('../utils/catchErrorUtil');
 
 class UserController {
   userService = new UserService();
@@ -16,11 +17,7 @@ class UserController {
 
       return res.status(201).json({ success: true, data: createUserResult });
     } catch (error) {
-      if (err instanceof MakeError) {
-        return res.status(err.code).json({ message: err.message });
-      }
-      console.error('UserController_createUser', err);
-      res.status(500).json({ message: 'Server Error' });
+      catchError(err, 'userController_createUser');
     }
   };
 
@@ -30,11 +27,7 @@ class UserController {
       const getUserResult = await this.userService.getUser(email);
       res.status(200).json({ success: true, data: getUserResult });
     } catch (err) {
-      if (err instanceof MakeError) {
-        return res.status(err.code).json({ message: err.message });
-      }
-      console.error('UserController_gettUser', err);
-      res.status(500).json({ message: 'Server Error' });
+      catchError(err, 'userController_getUser');
     }
   };
 
@@ -50,11 +43,7 @@ class UserController {
 
       res.status(200).json({ success: true, modifyUserResult });
     } catch (err) {
-      if (err instanceof MakeError) {
-        return res.status(err.code).json({ message: err.message });
-      }
-      console.error('UserController_modifyUser', err);
-      res.status(500).json({ message: 'Server Error' });
+      catchError(err, 'userController_modifyUser');
     }
   };
 
@@ -69,11 +58,7 @@ class UserController {
 
       res.status(402).json({ sucess: true, deleteUserResult });
     } catch (err) {
-      if (err instanceof MakeError) {
-        return res.status(err.code).json({ message: err.message });
-      }
-      console.error('UserController_deleteUser', err);
-      res.status(500).json({ message: 'Server Error' });
+      catchError(err, 'userController_deleteUser');
     }
   };
 }
