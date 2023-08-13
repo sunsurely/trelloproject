@@ -1,6 +1,7 @@
 const Card = require('../models/card');
 
 class CardRepo {
+  //카드 생성
   createCard = async (columnId, description, position, deadline, manager) => {
     const createCardResult = await Card.create({
       columnId,
@@ -12,7 +13,7 @@ class CardRepo {
 
     return createCardResult;
   };
-
+  //전체 카드 조회
   getAllCards = async (columnId) => {
     const getCardsResult = await Card.findAll({
       where: { columnId },
@@ -28,8 +29,8 @@ class CardRepo {
 
     return getCardsResult;
   };
-
-  modifyCard = async (cardId, name, description, deadline, manager) => {
+  //카드 내용수정
+  modifyCard = async (cardId, description, deadline, manager) => {
     const updateCardResult = await Card.update(
       { description, deadline, manager },
       { where: { cardId } },
@@ -37,7 +38,7 @@ class CardRepo {
 
     return updateCardResult[0];
   };
-
+  //카드 위치변경
   modifyCardPosition = async (positionInfo, t) => {
     const updateCardPositonResult = await Card.update(
       { position: positionInfo.position },
@@ -46,11 +47,11 @@ class CardRepo {
 
     return updateCardPositonResult;
   };
-
+  //카드삭제
   deleteCard = async (cardId) => {
     const deleteCardResult = await Card.destroy({ where: { cardId } });
 
-    return deleteCardResult[0];
+    return deleteCardResult;
   };
 }
 

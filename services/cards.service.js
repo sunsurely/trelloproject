@@ -6,6 +6,7 @@ const { sequelize } = require('../models');
 class CardService {
   cardRepo = new CardRepo();
 
+  //카드 생성
   createCard = async (columnId, description, position, deadline, manager) => {
     try {
       if (!columnId) {
@@ -40,6 +41,7 @@ class CardService {
     }
   };
 
+  //해당 보드의 컬럼의 모든 카드 조회
   getAllCards = async (columnId) => {
     try {
       if (!columnId) {
@@ -61,6 +63,7 @@ class CardService {
     }
   };
 
+  //카드수정
   modifyCard = async (cardId, description, position, deadline, manager) => {
     try {
       if (!cardId) {
@@ -72,9 +75,7 @@ class CardService {
 
       const updateCardResult = await this.cardRepo.modifyCard(
         cardId,
-        name,
         description,
-        position,
         deadline,
         manager,
       );
@@ -90,6 +91,7 @@ class CardService {
     }
   };
 
+  //카드 위치수정
   modifyCardPosition = async (positionInfos) => {
     const t = await sequelize.transaction({
       isolationLevel: Transaction.ISOLATION_LEVELS.READ_COMMITTED,
@@ -119,6 +121,7 @@ class CardService {
     }
   };
 
+  //카드삭제
   deleteCard = async (cardId) => {
     try {
       if (!cardId) {

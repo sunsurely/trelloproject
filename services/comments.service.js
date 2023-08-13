@@ -4,6 +4,7 @@ const MakeError = require('../utils/makeErrorUtil');
 class CommentService {
   commentRepo = new CommentRepo();
 
+  //댓글 등록
   createComment = async (userId, cardId, content) => {
     try {
       if (!userId) {
@@ -35,6 +36,7 @@ class CommentService {
     }
   };
 
+  //해당 카드의 모든 댓글 조회
   getAllComments = async (cardId) => {
     try {
       if (!cardId) {
@@ -56,6 +58,7 @@ class CommentService {
     }
   };
 
+  //댓글 상세조회
   getComment = async (commentId) => {
     try {
       if (!commentId) {
@@ -77,6 +80,7 @@ class CommentService {
     }
   };
 
+  //댓글 삭제
   deleteComment = async (userId, commentId) => {
     try {
       if (!commentId) {

@@ -4,6 +4,7 @@ const { catchError } = require('../utils/catchErrorUtil');
 class CardController {
   cardService = new CardService();
 
+  //카드 등록
   createCard = async (req, res) => {
     const columnId = req.params.columnId;
     const { description, position, deadline, manager } = req.body.data;
@@ -26,6 +27,7 @@ class CardController {
     }
   };
 
+  //해당 보드의 컬럼에 해당하는 모든 카드 조회
   getAllCards = async (req, res) => {
     try {
       const columnId = req.params.columnId;
@@ -38,9 +40,10 @@ class CardController {
     }
   };
 
+  //카드 내용 수정
   modifyCard = async (req, res) => {
     try {
-      const { name, description, deadline, manager } = req.body.data;
+      const { description, deadline, manager } = req.body.data;
       const cardId = req.params.cardId;
 
       await this.cardService.modifyCard(cardId, description, deadline, manager);
@@ -50,6 +53,7 @@ class CardController {
     }
   };
 
+  //카드 위치 변경
   modifyCardPosition = async (req, res) => {
     try {
       const positionInfos = req.body.data;
@@ -60,6 +64,7 @@ class CardController {
     }
   };
 
+  //카드 삭제
   deleteCard = async (req, res) => {
     try {
       const cardId = req.params.cardId;
