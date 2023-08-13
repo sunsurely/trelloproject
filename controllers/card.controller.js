@@ -47,7 +47,7 @@ class CardController {
       const cardId = req.params.cardId;
 
       await this.cardService.modifyCard(cardId, description, deadline, manager);
-      res.status(201).json({ message: '카드수정성공' });
+      res.status(200).json({ message: '카드수정성공' });
     } catch (err) {
       catchError(err, 'CardController_modifyCard', res);
     }
@@ -58,7 +58,7 @@ class CardController {
     try {
       const positionInfos = req.body.data;
       await this.cardService.modifyCardPosition(positionInfos);
-      res.status(201).json({ message: '카드 위치이동 성공' });
+      res.status(200).json({ message: '카드 위치이동 성공' });
     } catch (err) {
       catchError(err, 'CardController_deleteCardPosition', res);
     }
@@ -69,11 +69,10 @@ class CardController {
     try {
       const cardId = req.params.cardId;
 
-      const deleteCartResult = await this.cardService.deleteCard(cardId);
+      await this.cardService.deleteCard(cardId);
 
-      res.status(201).json({
+      res.status(204).json({
         message: '카드를 삭제했습니다.',
-        data: deleteCartResult,
       });
     } catch (err) {
       catchError(err, 'CardController_deleteCard', res);

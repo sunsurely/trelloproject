@@ -19,7 +19,7 @@ class CardService {
         throw new MakeError(400, 'description은 필수 입력사항입니다.');
       }
       if (position) {
-        if (isNaN(position) || columnId < 1) {
+        if (isNaN(position) || position < 1) {
           throw new MakeError(400, 'position이 올바른 형식이 아닙니다.');
         }
       }
@@ -32,7 +32,7 @@ class CardService {
         manager,
       );
       if (!createCardResult) {
-        throw new MakeError(402, '카드 등록에 실패했습니다.');
+        throw new MakeError(400, '카드 등록에 실패했습니다.');
       }
       return createCardResult;
     } catch (err) {
@@ -53,7 +53,7 @@ class CardService {
       const getCardsResult = await this.cardRepo.getAllCards(columnId);
 
       if (!getCardsResult) {
-        throw new MakeError(400, '해당 카드가 존재하지 않습니다.');
+        throw new MakeError(404, '해당 카드가 존재하지 않습니다.');
       }
 
       return getCardsResult;
@@ -64,7 +64,7 @@ class CardService {
   };
 
   //카드수정
-  modifyCard = async (cardId, description, position, deadline, manager) => {
+  modifyCard = async (cardId, description, deadline, manager) => {
     try {
       if (!cardId) {
         throw new MakeError(400, 'cardId를 수신받지 못했습니다.');
@@ -81,7 +81,7 @@ class CardService {
       );
 
       if (!updateCardResult) {
-        throw new MakeError(402, '카드 수정에 실패했습니다.');
+        throw new MakeError(404, '카드 수정에 실패했습니다.');
       }
 
       return updateCardResult;
@@ -110,7 +110,7 @@ class CardService {
       );
 
       if (!resultFirst || !resultSecond) {
-        throw new MakeError(402, 'position 수정에 실패했습니다.');
+        throw new MakeError(400, 'position 수정에 실패했습니다.');
       }
 
       await t.commit();
@@ -132,7 +132,7 @@ class CardService {
       }
       const deleteCardResult = await this.cardRepo.deleteCard(cardId);
       if (!deleteCardResult) {
-        throw new MakeError('402', '해당 카드를 삭제하지 못했습니다.');
+        throw new MakeError('400', '해당 카드를 삭제하지 못했습니다.');
       }
       return deleteCardResult;
     } catch (err) {

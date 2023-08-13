@@ -53,12 +53,9 @@ class UserController {
     try {
       const userId = res.locals.userId;
       const { password } = req.body;
-      const deleteUserResult = await this.userService.deleteUser(
-        userId,
-        password,
-      );
+      await this.userService.deleteUser(userId, password);
 
-      res.status(402).json({ sucess: true, deleteUserResult });
+      res.status(204).json({ sucess: true, message: '회원탈퇴' });
     } catch (err) {
       catchError(err, 'userController_deleteUser', res);
     }

@@ -35,32 +35,15 @@ class CommentController {
     }
   };
 
-  //댓글 상세 조회
-  getComment = async (req, res) => {
-    try {
-      const commentId = req.params.commentId;
-
-      const getCommentResult = await this.commentService.getComment(commentId);
-      res.status(200).json({ message: '댓글조회성공', getCommentResult });
-    } catch (err) {
-      catchError(err, 'commemtController_getComment', res);
-    }
-  };
-
   //댓글 삭제
   deleteComment = async (req, res) => {
     try {
       const commentId = req.params.commentId;
       const userId = res.locals.userId;
 
-      const deleteCommentResult = await this.commentService.deleteComment(
-        userId,
-        commentId,
-      );
+      await this.commentService.deleteComment(userId, commentId);
 
-      res
-        .status(201)
-        .json({ message: '댓글을 삭제했습니다.', data: deleteCommentResult });
+      res.status(204).json({ message: '댓글을 삭제했습니다.' });
     } catch (err) {
       catchError(err, 'CardController_deleteDeleteComment', res);
     }

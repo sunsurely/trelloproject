@@ -50,10 +50,8 @@ class CardRepo {
   };
   //카드삭제
   deleteCard = async (cardId) => {
-    console.log(cardId);
     const deleteCardResult = await Card.destroy({ where: { cardId } });
 
-    return deleteCardResult;
     return deleteCardResult;
   };
 }

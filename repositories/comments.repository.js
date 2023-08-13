@@ -20,16 +20,6 @@ class CommentRepo {
     return getCommentsResult;
   };
 
-  //댓글 상세조회
-  getComment = async (commentId) => {
-    const getCommentResult = await Comment.findOne({
-      where: { commentId },
-      attributes: ['commentId', 'content', 'createdAt'],
-    });
-
-    return getCommentResult;
-  };
-
   //댓글 삭제
   deleteComment = async (userId, commentId) => {
     const deleteCommentResult = await Comment.destroy({
