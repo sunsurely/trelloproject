@@ -2,7 +2,6 @@ const MakeError = require('../utils/makeErrorUtil');
 const BoardRespotisoty = require('../repositories/board.repository');
 const BoardGroupRepository = require('../repositories/boardGroup.repository');
 const UserService = require('../services/user.service');
-const cache = require('../cacheInit');
 const CollaboratorCaching = require('../cache');
 
 const { Transaction } = require('sequelize');
