@@ -7,7 +7,8 @@ class BoardController {
   // 보드 등록(생성)
   createBoard = async (req, res, next) => {
     // userId는 임시로 body로 받아옴
-    // const { userId, name, color, description } = req.body;
+
+    // const { userId, name, color, description } = req.body.data;
     const { name, color, description } = req.body.data;
     const userId = res.locals.userId;
     // console.log(userId);
