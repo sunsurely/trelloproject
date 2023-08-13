@@ -61,7 +61,7 @@ class CardService {
     }
   };
 
-  modifyCard = async (cardId, description, position, deadline, manager) => {
+  modifyCard = async (cardId, description, deadline, manager) => {
     try {
       if (!cardId) {
         throw new MakeError(400, 'cardId를 수신받지 못했습니다.');
@@ -72,10 +72,8 @@ class CardService {
 
       const updateCardResult = await this.cardRepo.modifyCard(
         cardId,
-        name,
         description,
-        position,
-        deadline,
+        Date(deadline),
         manager,
       );
 

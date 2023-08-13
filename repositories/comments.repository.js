@@ -19,15 +19,6 @@ class CommentRepo {
     return getCommentsResult;
   };
 
-  getComment = async (commentId) => {
-    const getCommentResult = await Comment.findOne({
-      where: { commentId },
-      attributes: ['commentId', 'content', 'createdAt'],
-    });
-
-    return getCommentResult;
-  };
-
   deleteComment = async (userId, commentId) => {
     const deleteCommentResult = await Comment.destroy({
       where: { commentId, userId },

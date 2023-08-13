@@ -56,27 +56,6 @@ class CommentService {
     }
   };
 
-  getComment = async (commentId) => {
-    try {
-      if (!commentId) {
-        throw new MakeError(400, 'commentId를 수신받지 못했습니다.');
-      }
-      if (isNaN(commentId) || commentId < 1) {
-        throw new MakeError(400, 'commentId가 올바른 형식이 아닙니다.');
-      }
-      const getCommentResult = await this.commentRepo.getComment(commentId);
-
-      if (!getCommentResult) {
-        throw new MakeError(400, '해당 댓글이 존재하지 않습니다.');
-      }
-
-      return getCommentResult;
-    } catch (err) {
-      console.error('CommentService_CommentComment', err);
-      throw err;
-    }
-  };
-
   deleteComment = async (userId, commentId) => {
     try {
       if (!commentId) {

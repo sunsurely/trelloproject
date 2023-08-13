@@ -6,7 +6,7 @@ class CommentController {
   createComment = async (req, res) => {
     const userId = res.locals.userId;
     const cardId = req.params.cardId;
-    const { content } = req.body;
+    const { content } = req.body.data;
     try {
       await this.commentService.createComment(userId, cardId, content);
 
@@ -30,17 +30,6 @@ class CommentController {
         .json({ message: '댓글조회성공', data: getAllCommentsResult });
     } catch (err) {
       catchError(err, 'commentController_getAllComment', res);
-    }
-  };
-
-  getComment = async (req, res) => {
-    try {
-      const commentId = req.params.commentId;
-
-      const getCommentResult = await this.commentService.getComment(commentId);
-      res.status(200).json({ message: '댓글조회성공', getCommentResult });
-    } catch (err) {
-      catchError(err, 'getComment', res);
     }
   };
 
