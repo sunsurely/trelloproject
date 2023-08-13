@@ -65,6 +65,7 @@ exports.hasMinimumPermission = (permission) => {
       }
 
       const invited = await collaboratorCaching.getCachedCollaborator(userId);
+
       if (!invited) {
         console.log(invited);
         return res
@@ -77,10 +78,6 @@ exports.hasMinimumPermission = (permission) => {
         write: 2,
         readonly: 1,
       };
-      if (invited.permission === 'owner') {
-        res.locals.isOwner === true;
-        next();
-      }
 
       if (invited.permission >= `${grade[permission]}`) {
         next();
