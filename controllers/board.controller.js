@@ -154,11 +154,10 @@ class BoardController {
     const { userId } = req.body.data;
 
     try {
-      const result =
-        await this.boardService.boardGroupRepo.deleteBoardGroupMember(
-          boardId,
-          userId,
-        );
+      const result = await this.boardService.deleteBoardGroupMember(
+        boardId,
+        userId,
+      );
 
       return res.status(201).json({ message: '정상적으로 삭제됐습니다.' });
     } catch (err) {
