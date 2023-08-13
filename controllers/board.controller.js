@@ -1,4 +1,3 @@
-const MakeError = require('../utils/makeErrorUtil');
 const BoardService = require('../services/board.service');
 const { catchError } = require('../utils/catchErrorUtil');
 

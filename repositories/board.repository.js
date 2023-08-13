@@ -1,9 +1,7 @@
 const MakeError = require('../utils/makeErrorUtil');
 const Board = require('../models/board');
-const BoardGroup = require('../models/boardGroup');
 
 class BoardRepository {
-  // 같은 사용자가 같은 이름으로 만들려고 할 때 어떻게 해결 할 것인가? 보드 아이디가 생성되니 상관 없나?
   createBoard = async (userId, name, color, description, t) => {
     let result;
     if (!t) {

@@ -1,5 +1,6 @@
 const CommentService = require('../services/comments.service');
 const { catchError } = require('../utils/catchErrorUtil');
+
 class CommentController {
   commentService = new CommentService();
 

@@ -6,7 +6,7 @@ class UserController {
   userService = new UserService();
   //회원가입
   createUser = async (req, res) => {
-    const { email, name, password, confirm, content } = req.body.userData;
+    const { email, name, password, confirm, content } = req.body.data;
 
     try {
       const createUserResult = await this.userService.createUser(
