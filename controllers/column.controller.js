@@ -8,7 +8,7 @@ class ColumnController {
   createColumn = async (req, res) => {
     try {
       const { boardId } = req.params;
-      const { name, position } = req.body;
+      const { name, position } = req.body.data;
       const userId = res.locals.userId;
 
       await this.columnService.createColumn(boardId, name, position, userId);
@@ -38,7 +38,7 @@ class ColumnController {
   modifyNameOfColumn = async (req, res) => {
     try {
       const { boardId, columnId } = req.params;
-      const { name } = req.body;
+      const { name } = req.body.data;
       const userId = res.locals.userId;
 
       await this.columnService.modifyNameOfColumn(
@@ -57,7 +57,7 @@ class ColumnController {
   modifyPositionOfColumn = async (req, res) => {
     try {
       const { boardId, columnId } = req.params;
-      const { position } = req.body;
+      const { position } = req.body.data;
       const userId = res.locals.userId;
 
       await this.columnService.modifyPositionOfColumn(
