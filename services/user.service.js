@@ -7,8 +7,14 @@ class UserService {
 
   createUser = async (email, name, password, confirm, content) => {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    console.log(email);
+
     try {
+      const existUser = await this.userRepo.getUser(email);
+
+      if (existUser) {
+        throw new MakeError(400, '이미 존재하는 유저입니다.');
+      }
+
       if (!email) {
         throw new MakeError(400, 'email을 입력해주세요');
       }
