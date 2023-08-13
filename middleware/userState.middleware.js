@@ -65,6 +65,7 @@ exports.hasMinimumPermission = (permission) => {
       }
 
       const invited = await collaboratorCaching.getCachedCollaborator(userId);
+
       if (!invited) {
         console.log(invited);
         return res
