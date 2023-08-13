@@ -16,7 +16,7 @@ router.post(
 );
 router.get('/column/:columnId/cards', authorizated, cardController.getAllCards);
 router.put(
-  '/column/columnId/cards/:cardId',
+  '/column/:columnId/cards/:cardId',
   authorizated,
   hasMinimumPermission('write'),
   cardController.modifyCard,
@@ -28,7 +28,7 @@ router.put(
   cardController.modifyCardPosition,
 );
 router.delete(
-  '/column/columnId/cards/:cardId',
+  '/column/:columnId/cards/:cardId',
   authorizated,
   hasMinimumPermission('write'),
   cardController.deleteCard,

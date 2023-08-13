@@ -18,6 +18,7 @@ class CardRepo {
       where: { columnId },
       attributes: [
         'cardId',
+        'columnId',
         'description',
         'position',
         'deadline',
@@ -29,7 +30,7 @@ class CardRepo {
     return getCardsResult;
   };
 
-  modifyCard = async (cardId, name, description, deadline, manager) => {
+  modifyCard = async (cardId, description, deadline, manager) => {
     const updateCardResult = await Card.update(
       { description, deadline, manager },
       { where: { cardId } },
@@ -48,9 +49,10 @@ class CardRepo {
   };
 
   deleteCard = async (cardId) => {
+    console.log(cardId);
     const deleteCardResult = await Card.destroy({ where: { cardId } });
 
-    return deleteCardResult[0];
+    return deleteCardResult;
   };
 }
 

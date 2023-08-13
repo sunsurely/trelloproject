@@ -5,7 +5,7 @@ class BoardGroupRepository {
   // 보드를 생성할 때 보드 생성자가 보드 멤버로 들어가기 때문에 트랜잭션으로 처리
   inviteBoardGroupMember = async (boardId, userId, permission, t) => {
     let result;
-    console.log(`boardId: ${boardId}`);
+    // console.log(`boardId: ${boardId}`);
     if (!t) {
       result = await BoardGroup.create({
         boardId,
