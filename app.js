@@ -11,7 +11,7 @@ require('dotenv').config();
 const cors = require('cors');
 const mainRouter = require('./routes');
 const { sequelize } = require('./models');
-app.set('port', process.env.PORT || 3000);
+app.set('port', process.env.PORT || 3001);
 
 // sequelize
 //   .sync({ force: true })

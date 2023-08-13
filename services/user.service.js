@@ -7,6 +7,7 @@ class UserService {
 
   createUser = async (email, name, password, confirm, content) => {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    console.log(email);
     try {
       if (!email) {
         throw new MakeError(400, 'email을 입력해주세요');

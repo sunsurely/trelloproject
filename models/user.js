@@ -19,7 +19,7 @@ class User extends Sequelize.Model {
           allowNull: true,
         },
         email: {
-          type: Sequelize.STRING(15),
+          type: Sequelize.STRING(30),
           allowNull: false,
           unique: true,
         },

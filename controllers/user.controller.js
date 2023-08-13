@@ -5,7 +5,7 @@ const { catchError } = require('../utils/catchErrorUtil');
 class UserController {
   userService = new UserService();
   createUser = async (req, res) => {
-    const { email, name, password, confirm, content } = req.body;
+    const { email, name, password, confirm, content } = req.body.userData;
 
     try {
       const createUserResult = await this.userService.createUser(
@@ -18,7 +18,7 @@ class UserController {
 
       return res.status(201).json({ success: true, data: createUserResult });
     } catch (error) {
-      catchError(err, 'userController_createUser');
+      catchError(error, 'userController_createUser', res);
     }
   };
 
@@ -28,7 +28,7 @@ class UserController {
       const getUserResult = await this.userService.getUser(email);
       res.status(200).json({ success: true, data: getUserResult });
     } catch (err) {
-      catchError(err, 'userController_getUser');
+      catchError(err, 'userController_getUser', res);
     }
   };
 
@@ -44,7 +44,7 @@ class UserController {
 
       res.status(200).json({ success: true, modifyUserResult });
     } catch (err) {
-      catchError(err, 'userController_modifyUser');
+      catchError(err, 'userController_modifyUser', res);
     }
   };
 
@@ -59,7 +59,7 @@ class UserController {
 
       res.status(402).json({ sucess: true, deleteUserResult });
     } catch (err) {
-      catchError(err, 'userController_deleteUser');
+      catchError(err, 'userController_deleteUser', res);
     }
   };
 }
