@@ -52,8 +52,8 @@ class CardService {
       }
       const getCardsResult = await this.cardRepo.getAllCards(columnId);
 
-      if (!getCardsResult) {
-        throw new MakeError(404, '해당 카드가 존재하지 않습니다.');
+      if (getCardsResult.length <= 0) {
+        throw new MakeError(204, '카드를 등록해주세요.');
       }
 
       return getCardsResult;
