@@ -76,7 +76,7 @@ class CardService {
       const updateCardResult = await this.cardRepo.modifyCard(
         cardId,
         description,
-        deadline,
+        Date(deadline),
         manager,
       );
 

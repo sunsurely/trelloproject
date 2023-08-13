@@ -2,6 +2,8 @@ const MakeError = require('../utils/makeErrorUtil');
 const BoardRespotisoty = require('../repositories/board.repository');
 const BoardGroupRepository = require('../repositories/boardGroup.repository');
 const UserService = require('../services/user.service');
+const CollaboratorCaching = require('../cache');
+
 const { Transaction } = require('sequelize');
 const { sequelize } = require('../models');
 
@@ -9,6 +11,7 @@ class BoardService {
   boardRepo = new BoardRespotisoty();
   boardGroupRepo = new BoardGroupRepository();
   userService = new UserService();
+  collaboratorCaching = new CollaboratorCaching();
 
   // 보드 생성
   createBoard = async (userId, name, color, description) => {
@@ -157,6 +160,8 @@ class BoardService {
       permission,
     );
 
+    await this.collaboratorCaching.addCachedCollaborator(email);
+
     if (!result) {
       throw new MakeError(400, '멤버 초대에 실패하였습니다.');
     }
@@ -180,7 +185,7 @@ class BoardService {
 
   // 보드 멤버 권한 수정
   modifyBoardGroupMemberPermission = async (boardId, userId, permission) => {
-    if (isNaN(boardId) || isNaN(userId) || permission) {
+    if (isNaN(boardId) || isNaN(userId) || !permission) {
       throw new MakeError(400, '잘못된 형식입니다.');
     }
 
@@ -189,6 +194,8 @@ class BoardService {
       userId,
       permission,
     );
+
+    await this.collaboratorCaching.modifyCachedCollaborator(userId);
 
     if (!result) {
       throw new MakeError(400, '수정이 실패하였습니다.');
@@ -207,6 +214,9 @@ class BoardService {
       boardId,
       userId,
     );
+
+    await this.collaboratorCaching.deleteCachedCollaborator(userId);
+
     if (!result) {
       throw new MakeError(400, '삭제에 실패하였습니다.');
     }

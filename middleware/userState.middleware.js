@@ -61,7 +61,7 @@ exports.hasMinimumPermission = (permission) => {
       if (isNaN(userId) || userId < 1) {
         return res
           .status(400)
-          .json({ sucess: false, message: '초대된 유저만 사용가능합니다.' });
+          .json({ sucess: false, message: '초대된 유저만 사용가능합니다1.' });
       }
 
       const invited = await collaboratorCaching.getCachedCollaborator(userId);
@@ -70,7 +70,7 @@ exports.hasMinimumPermission = (permission) => {
         console.log(invited);
         return res
           .status(400)
-          .json({ sucess: false, message: '초대된 유저만 사용가능합니다.' });
+          .json({ sucess: false, message: '초대된 유저만 사용가능합니다2.' });
       }
 
       const grade = {

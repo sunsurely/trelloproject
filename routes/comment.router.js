@@ -15,7 +15,6 @@ router.post(
   commentController.createComment,
 );
 router.get('/cards/:cardId/comments', commentController.getAllComments);
-router.get('/cards/comments/:commentId', commentController.getComment);
 router.delete(
   '/cards/comments/:commentId',
   authorizated,
