@@ -1,5 +1,5 @@
 const ColumnService = require('../services/column.service.js');
-const MakeError = require('../utils/makeErrorUtil.js');
+const { catchError } = require('../utils/catchErrorUtil.js');
 
 class ColumnController {
   columnService = new ColumnService();
@@ -14,11 +14,7 @@ class ColumnController {
       await this.columnService.createColumn(boardId, name, position, userId);
       return res.status(201).json({ message: '컬럼을 추가하였습니다.' });
     } catch (err) {
-      if (err instanceof MakeError) {
-        return res.status(err.code).json({ message: err.message });
-      }
-      console.log(err);
-      return res.status(500).json({ message: 'Server Error' });
+      catchError(err, 'ColumnController_createColumn', res);
     }
   };
 
@@ -34,11 +30,7 @@ class ColumnController {
       );
       return res.status(200).json({ columnList });
     } catch (err) {
-      if (err instanceof MakeError) {
-        return res.status(err.code).json({ message: err.message });
-      }
-      console.log(err);
-      return res.status(500).json({ message: 'Server Error' });
+      catchError(err, 'ColumnController_getAllColumns', res);
     }
   };
 
@@ -57,11 +49,7 @@ class ColumnController {
       );
       return res.status(200).json({ message: '컬럼 이름이 수정되었습니다.' });
     } catch (err) {
-      if (err instanceof MakeError) {
-        return res.status(err.code).json({ message: err.message });
-      }
-      console.log(err);
-      return res.status(500).json({ message: 'Server Error' });
+      catchError(err, 'ColumnController_modifyNameOfColumn', res);
     }
   };
 
@@ -80,11 +68,7 @@ class ColumnController {
       );
       return res.status(200).json({ message: '컬럼 위치가 수정되었습니다.' });
     } catch (err) {
-      if (err instanceof MakeError) {
-        return res.status(err.code).json({ message: err.message });
-      }
-      console.log(err);
-      return res.status(500).json({ message: 'Server Error' });
+      catchError(err, 'ColumnController_modifyPositionOfColumn', res);
     }
   };
 
@@ -97,11 +81,7 @@ class ColumnController {
       await this.columnService.deleteColumn(boardId, columnId, userId);
       return res.status(200).json({ message: '컬럼을 삭제하였습니다.' });
     } catch (err) {
-      if (err instanceof MakeError) {
-        return res.status(err.code).json({ message: err.message });
-      }
-      console.log(err);
-      return res.status(500).json({ message: 'Server Error' });
+      catchError(err, 'ColumnController_deleteColumn', res);
     }
   };
 }
