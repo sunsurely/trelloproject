@@ -6,7 +6,7 @@ class CardController {
 
   createCard = async (req, res) => {
     const columnId = req.params.columnId;
-    const { description, position, deadline, manager } = req.body;
+    const { description, position, deadline, manager } = req.body.data;
     try {
       const createCardResult = await this.cardService.createCard(
         columnId,
@@ -34,29 +34,29 @@ class CardController {
 
       res.status(200).json({ message: '카드조회성공', data: getCardsResult });
     } catch (err) {
-      catchError(err, 'CardController_getAllCard');
+      catchError(err, 'CardController_getAllCard', res);
     }
   };
 
   modifyCard = async (req, res) => {
     try {
-      const { name, description, deadline, manager } = req.body;
+      const { name, description, deadline, manager } = req.body.data;
       const cardId = req.params.cardId;
 
       await this.cardService.modifyCard(cardId, description, deadline, manager);
       res.status(201).json({ message: '카드수정성공' });
     } catch (err) {
-      catchError(err, 'CardController_modifyCard');
+      catchError(err, 'CardController_modifyCard', res);
     }
   };
 
   modifyCardPosition = async (req, res) => {
     try {
-      const positionInfos = req.body;
+      const positionInfos = req.body.data;
       await this.cardService.modifyCardPosition(positionInfos);
       res.status(201).json({ message: '카드 위치이동 성공' });
     } catch (err) {
-      catchError(err, 'CardController_deleteCardPosition');
+      catchError(err, 'CardController_deleteCardPosition', res);
     }
   };
 
@@ -71,7 +71,7 @@ class CardController {
         data: deleteCartResult,
       });
     } catch (err) {
-      catchError(err, 'CardController_deleteCard');
+      catchError(err, 'CardController_deleteCard', res);
     }
   };
 }

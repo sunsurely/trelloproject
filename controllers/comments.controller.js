@@ -14,7 +14,7 @@ class CommentController {
         .status(201)
         .json({ sucess: true, message: '댓글등록에 성공했습니다.' });
     } catch (err) {
-      catchError(err, 'commentController_createComment');
+      catchError(err, 'commentController_createComment', res);
     }
   };
 
@@ -29,7 +29,7 @@ class CommentController {
         .status(200)
         .json({ message: '댓글조회성공', data: getAllCommentsResult });
     } catch (err) {
-      catchError(err, 'commentController_getAllComment');
+      catchError(err, 'commentController_getAllComment', res);
     }
   };
 
@@ -40,7 +40,7 @@ class CommentController {
       const getCommentResult = await this.commentService.getComment(commentId);
       res.status(200).json({ message: '댓글조회성공', getCommentResult });
     } catch (err) {
-      catchError(err, 'getComment');
+      catchError(err, 'getComment', res);
     }
   };
 
@@ -58,7 +58,7 @@ class CommentController {
         .status(201)
         .json({ message: '댓글을 삭제했습니다.', data: deleteCommentResult });
     } catch (err) {
-      catchError(err, 'CardController_deleteDeleteComment');
+      catchError(err, 'CardController_deleteDeleteComment', res);
     }
   };
 }

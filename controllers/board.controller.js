@@ -7,8 +7,9 @@ class BoardController {
   // 보드 등록(생성)
   createBoard = async (req, res, next) => {
     // userId는 임시로 body로 받아옴
-    // const { userId, name, color, description } = req.body;
-    const { name, color, description } = req.body;
+
+    // const { userId, name, color, description } = req.body.data;
+    const { name, color, description } = req.body.data;
     const userId = res.locals.userId;
     // console.log(userId);
 
@@ -73,7 +74,7 @@ class BoardController {
 
   // 보드 수정
   modifyBoard = async (req, res, next) => {
-    const { name, color, description } = req.body;
+    const { name, color, description } = req.body.data;
     const { boardId } = req.params;
     const userId = res.locals.userId;
 
@@ -118,7 +119,7 @@ class BoardController {
 
   // 보드 멤버 초대
   inviteBoardGroupMember = async (req, res, next) => {
-    const { email, permission } = req.body;
+    const { email, permission } = req.body.data;
     const { boardId } = req.params;
 
     try {
@@ -164,7 +165,7 @@ class BoardController {
   // 보드 멤버 권한 수정
   modifyBoardGroupMemberPermission = async (req, res, next) => {
     const { boardId } = req.params;
-    const { userId, permission } = req.body;
+    const { userId, permission } = req.body.data;
 
     try {
       const result = await this.boardService.modifyBoardGroupMemberPermission(
@@ -190,7 +191,7 @@ class BoardController {
   // 보드 멤버 삭제
   deleteBoardGroupMember = async (req, res, next) => {
     const { boardId } = req.params;
-    const { userId } = req.body;
+    const { userId } = req.body.data;
 
     try {
       const result =

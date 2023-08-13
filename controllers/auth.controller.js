@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt');
 
 exports.loginController = async (req, res, next) => {
   try {
-    const { email, password } = req.body;
+    const { email, password } = req.body.data;
     if (res.locals.isLoggedIn) {
       return res.status(400).json({ errorMessage: '이미 로그인 중입니다.' });
     }
