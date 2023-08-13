@@ -2,14 +2,11 @@ const cache = require('./cacheInit');
 const { BoardGroup } = require('./models');
 
 class CollaboratorCaching {
-  setCachedCollaborators = async (boardId) => {
+  setCachedCollaborators = async () => {
     try {
       // cache.flushAll();
 
-      const collaborators = await BoardGroup.findAll({
-        where: { boardId },
-        raw: true,
-      });
+      const collaborators = await BoardGroup.findAll({});
 
       for (const collaborator of collaborators) {
         cache.set(`cacheKey${collaborator.collaborator}`, collaborator);

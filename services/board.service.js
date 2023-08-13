@@ -1,8 +1,6 @@
 const MakeError = require('../utils/makeErrorUtil');
 const BoardRespotisoty = require('../repositories/board.repository');
 const BoardGroupRepository = require('../repositories/boardGroup.repository');
-const CollaboratorCaching = require('../cache');
-const collaboratorCaching = new CollaboratorCaching();
 const UserService = require('../services/user.service');
 const { Transaction } = require('sequelize');
 const { sequelize } = require('../models');
@@ -83,7 +81,6 @@ class BoardService {
 
   // 보드 조회(접속?)
   getBoard = async (boardId, userId) => {
-    collaboratorCaching.setCachedCollaborators(boardId);
     if (isNaN(userId) || isNaN(boardId)) {
       throw new MakeError(400, '잘못된 형식입니다.');
     }

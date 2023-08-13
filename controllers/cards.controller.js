@@ -22,7 +22,7 @@ class CardController {
         createCardResult,
       });
     } catch (err) {
-      catchError(err, 'CardController_createCard');
+      catchError(err, 'CardController_createCard', res);
     }
   };
 

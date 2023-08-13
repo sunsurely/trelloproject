@@ -1,4 +1,6 @@
-exports.catchError = (error, errorSide) => {
+const MakeError = require('../utils/makeErrorUtil');
+
+exports.catchError = (error, errorSide, res) => {
   if (error instanceof MakeError) {
     return res.status(error.code).json({ message: error.message });
   }
