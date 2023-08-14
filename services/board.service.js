@@ -220,7 +220,7 @@ class BoardService {
       userId,
     );
 
-    await this.collaboratorCaching.deleteCachedCollaborator(boardId);
+    await this.collaboratorCaching.initCachedCollaborators(boardId);
 
     if (!result) {
       throw new MakeError(400, '삭제에 실패하였습니다.');
