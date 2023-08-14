@@ -87,8 +87,9 @@ class BoardService {
     if (isNaN(userId) || isNaN(boardId)) {
       throw new MakeError(400, '잘못된 형식입니다.');
     }
-
-    await this.collaboratorCaching.setCachedCollaborators(boardId);
+    if (await this.collaboratorCaching.getCachedCollaborators(boardId)) {
+      await this.collaboratorCaching.setCachedCollaborators(boardId);
+    }
 
     const result = await this.boardRepo.getBoard(boardId);
     if (!result) {
