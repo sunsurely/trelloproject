@@ -7,9 +7,7 @@ class CollaboratorCaching {
     try {
       const collaborators = await BoardGroup.findAll({});
 
-      for (const row of collaborators) {
-        cache.set(`cacheKey${row.collaborator}`, row);
-      }
+      cache.set(`cacheKey${collaborators[0].boardId}`, collaborators);
       console.log('collaborator 데이터 캐싱 성공');
     } catch (err) {
       console.log('collaborator 데이터 캐싱 실패', err);
@@ -24,11 +22,8 @@ class CollaboratorCaching {
         include: { model: User, where: { email } },
         raw: true,
       });
-      cache.set(
-        `cacheKey${inviteCollaborator.collaborator}`,
-        inviteCollaborator,
-      );
-    //   console.log('collaborator 데이터 캐싱 추가 성공', inviteCollaborator);
+      cache.set(`cacheKey${inviteCollaborator.boardId}`, inviteCollaborator);
+      console.log('collaborator 데이터 캐싱 추가 성공');
     } catch (err) {
       console.log('collaborator 데이터 캐싱 추가 실패', err);
       throw err;
@@ -36,26 +31,26 @@ class CollaboratorCaching {
   };
 
   // 초대된 멤버 퍼미션 수정시
-  modifyCachedCollaborator = async (userId) => {
+  modifyCachedCollaborator = async (boardId) => {
     try {
       const modifyCachedCollaborator = await BoardGroup.findOne({
-        where: { collaborator: userId },
+        where: { boardId },
       });
 
       cache.set(
-        `cacheKey${modifyCachedCollaborator.collaborator}`,
+        `cacheKey${modifyCachedCollaborator.boardId}`,
         modifyCachedCollaborator,
       );
-    //   console.log('캐싱된 데이터 수정 성공', modifyCachedCollaborator);
+      console.log('캐싱된 데이터 수정 성공');
     } catch (err) {
       console.log('캐싱된 데이터 수정 실패', err);
       throw err;
     }
   };
 
-  deleteCachedCollaborator = async (userId) => {
+  deleteCachedCollaborator = async (boardId) => {
     try {
-      const cacheKey = `cacheKey${userId}`;
+      const cacheKey = `cacheKey${boardId}`;
       const collaborator = cache.get(cacheKey);
 
       if (collaborator) {
@@ -68,12 +63,12 @@ class CollaboratorCaching {
     }
   };
 
-  getCachedCollaborator = (collaborator) => {
+  getCachedCollaborator = (boardId) => {
     try {
-      const cachedCollaborator = cache.get(`cacheKey${collaborator}`);
+      const cachedCollaborator = cache.get(`cacheKey${boardId}`);
 
       if (cachedCollaborator) {
-        // console.log('collaborator 데이터 GET 성공', cachedCollaborator);
+        console.log('collaborator 데이터 GET 성공');
         return cachedCollaborator;
       }
     } catch (err) {

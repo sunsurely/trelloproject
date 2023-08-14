@@ -57,20 +57,28 @@ exports.isLoggedIn = async (req, res, next) => {
 exports.hasMinimumPermission = (permission) => {
   const isInvited = async (req, res, next) => {
     const userId = res.locals.userId;
+    const { boardId } = req.params;
+
     try {
       if (isNaN(userId) || userId < 1) {
         return res
           .status(400)
-          .json({ sucess: false, message: '초대된 유저만 사용가능합니다1.' });
+          .json({ sucess: false, message: '초대된 유저만 사용가능합니다.' });
       }
 
-      const invited = await collaboratorCaching.getCachedCollaborator(userId);
+      const invited = await collaboratorCaching.getCachedCollaborator(boardId);
+      const findMyInvited = invited.find((a) => a.collaborator === userId);
 
-      if (!invited) {
-        console.log(invited);
+      if (invited.lenth === 0) {
         return res
           .status(400)
-          .json({ sucess: false, message: '초대된 유저만 사용가능합니다2.' });
+          .json({ sucess: false, message: '보드가 없습니다.' });
+      }
+
+      if (!findMyInvited.collaborator) {
+        return res
+          .status(400)
+          .json({ sucess: false, message: '초대된 유저만 가능합니다.' });
       }
 
       const grade = {
@@ -79,7 +87,7 @@ exports.hasMinimumPermission = (permission) => {
         readonly: 1,
       };
 
-      if (invited.permission >= `${grade[permission]}`) {
+      if (findMyInvited.permission >= `${grade[permission]}`) {
         next();
       }
     } catch (err) {
