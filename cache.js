@@ -3,9 +3,9 @@ const { BoardGroup, User } = require('./models');
 
 class CollaboratorCaching {
   // 서버를 켰을때 BoardGroup 전체 데이터 캐싱
-  setCachedCollaborators = async () => {
+  setCachedCollaborators = async (boardId) => {
     try {
-      const collaborators = await BoardGroup.findAll({});
+      const collaborators = await BoardGroup.findAll({ where: { boardId } });
 
       cache.set(`cacheKey${collaborators[0].boardId}`, collaborators);
       console.log('collaborator 데이터 캐싱 성공');

@@ -84,9 +84,11 @@ class BoardService {
 
   // 보드 조회(접속?)
   getBoard = async (boardId, userId) => {
+    await this.collaboratorCaching.setCachedCollaborators(boardId);
     if (isNaN(userId) || isNaN(boardId)) {
       throw new MakeError(400, '잘못된 형식입니다.');
     }
+
     const result = await this.boardRepo.getBoard(boardId);
     if (!result) {
       throw new MakeError(404, '보드가 존재하지 않습니다.');
