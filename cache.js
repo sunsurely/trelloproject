@@ -28,7 +28,7 @@ class CollaboratorCaching {
         `cacheKey${inviteCollaborator.collaborator}`,
         inviteCollaborator,
       );
-    //   console.log('collaborator 데이터 캐싱 추가 성공', inviteCollaborator);
+      //   console.log('collaborator 데이터 캐싱 추가 성공', inviteCollaborator);
     } catch (err) {
       console.log('collaborator 데이터 캐싱 추가 실패', err);
       throw err;
@@ -46,7 +46,7 @@ class CollaboratorCaching {
         `cacheKey${modifyCachedCollaborator.collaborator}`,
         modifyCachedCollaborator,
       );
-    //   console.log('캐싱된 데이터 수정 성공', modifyCachedCollaborator);
+      //   console.log('캐싱된 데이터 수정 성공', modifyCachedCollaborator);
     } catch (err) {
       console.log('캐싱된 데이터 수정 실패', err);
       throw err;
