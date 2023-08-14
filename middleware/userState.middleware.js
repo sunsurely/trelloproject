@@ -67,7 +67,7 @@ exports.hasMinimumPermission = (permission) => {
       }
 
       const invited = await collaboratorCaching.getCachedCollaborator(boardId);
-      console.log(invited);
+
       const findMyInvited = invited.find((a) => a.collaborator === userId);
 
       if (invited.lenth === 0) {
