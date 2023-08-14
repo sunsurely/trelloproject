@@ -91,7 +91,7 @@ class BoardService {
       await this.collaboratorCaching.getCachedCollaborator(boardId);
 
     if (!existInvitedData || existInvitedData.length <= 0) {
-      await this.collaboratorCaching.setCachedCollaborators(boardId);
+      await this.collaboratorCaching.initCachedCollaborators(boardId);
     }
 
     const result = await this.boardRepo.getBoard(boardId);
@@ -167,7 +167,7 @@ class BoardService {
       permission,
     );
 
-    await this.collaboratorCaching.resetCachedCollaborator(boardId);
+    await this.collaboratorCaching.initCachedCollaborators(boardId);
     if (!result) {
       throw new MakeError(400, '멤버 초대에 실패하였습니다.');
     }
@@ -201,7 +201,7 @@ class BoardService {
       permission,
     );
 
-    await this.collaboratorCaching.resetCachedCollaborator(boardId);
+    await this.collaboratorCaching.initCachedCollaborators(boardId);
     if (!result) {
       throw new MakeError(400, '수정이 실패하였습니다.');
     }
