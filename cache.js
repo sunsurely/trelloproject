@@ -15,21 +15,6 @@ class CollaboratorCaching {
     }
   };
 
-  deleteCachedCollaborator = async (boardId) => {
-    try {
-      const cacheKey = `cacheKey${boardId}`;
-      const collaborator = cache.get(cacheKey);
-
-      if (collaborator) {
-        cache.del(cacheKey);
-        console.log('캐싱 삭제 성공');
-      }
-    } catch (err) {
-      console.log('캐싱 삭제 실패', err);
-      throw err;
-    }
-  };
-
   getCachedCollaborator = (boardId) => {
     try {
       const cachedCollaborator = cache.get(`cacheKey${boardId}`);
