@@ -8,7 +8,7 @@ class ColumnService {
   columnRepository = new ColumnRepository();
 
   // 컬럼 추가
-  createColumn = async (boardId, name, position, userId) => {
+  createColumn = async (boardId, name, position) => {
     if (isNaN(boardId) || boardId < 1) {
       throw new MakeError(400, '잘못된 boardId 형식입니다.');
     }
@@ -39,7 +39,7 @@ class ColumnService {
   };
 
   // 컬럼 조회
-  getAllColumns = async (boardId, userId) => {
+  getAllColumns = async (boardId) => {
     if (isNaN(boardId) || boardId < 1) {
       throw new MakeError(400, '잘못된 boardId 형식입니다.');
     }
@@ -55,7 +55,7 @@ class ColumnService {
   };
 
   // 컬럼 수정(name)
-  modifyNameOfColumn = async (boardId, columnId, name, userId) => {
+  modifyNameOfColumn = async (boardId, columnId, name) => {
     if (isNaN(boardId) || boardId < 1) {
       throw new MakeError(400, '잘못된 boardId 형식입니다.');
     }
@@ -82,7 +82,7 @@ class ColumnService {
   };
 
   // 컬럼 수정(position)
-  modifyPositionOfColumn = async (boardId, columnId, position, userId) => {
+  modifyPositionOfColumn = async (boardId, columnId, position) => {
     if (isNaN(boardId) || boardId < 1) {
       throw new MakeError(400, '잘못된 boardId 형식입니다.');
     }
@@ -143,7 +143,7 @@ class ColumnService {
   };
 
   // 컬럼 삭제
-  deleteColumn = async (boardId, columnId, userId) => {
+  deleteColumn = async (boardId, columnId) => {
     if (isNaN(boardId) || boardId < 1) {
       throw new MakeError(400, '잘못된 boardId 형식입니다.');
     }

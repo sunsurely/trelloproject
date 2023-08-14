@@ -195,7 +195,7 @@ class BoardService {
       permission,
     );
 
-    await this.collaboratorCaching.modifyCachedCollaborator(userId);
+    await this.collaboratorCaching.modifyCachedCollaborator(boardId);
 
     if (!result) {
       throw new MakeError(400, '수정이 실패하였습니다.');
@@ -215,7 +215,7 @@ class BoardService {
       userId,
     );
 
-    await this.collaboratorCaching.deleteCachedCollaborator(userId);
+    await this.collaboratorCaching.deleteCachedCollaborator(boardId);
 
     if (!result) {
       throw new MakeError(400, '삭제에 실패하였습니다.');
