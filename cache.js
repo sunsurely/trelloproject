@@ -3,7 +3,7 @@ const { BoardGroup, User } = require('./models');
 
 class CollaboratorCaching {
   // 해당 보드 조회시 캐싱
-  setCachedCollaborators = async (boardId) => {
+  initCachedCollaborators = async (boardId) => {
     try {
       const collaborators = await BoardGroup.findAll({ where: { boardId } });
 
@@ -11,20 +11,6 @@ class CollaboratorCaching {
       console.log('collaborator 데이터 캐싱 성공');
     } catch (err) {
       console.log('collaborator 데이터 캐싱 실패', err);
-      throw err;
-    }
-  };
-
-  // 초대한 멤버 데이터 캐싱
-  resetCachedCollaborator = async (boardId) => {
-    try {
-      const inviteCollaborator = await BoardGroup.findAll({
-        where: { boardId },
-      });
-      cache.set(`cacheKey${inviteCollaborator.boardId}`, inviteCollaborator);
-      console.log('collaborator 데이터 캐싱 추가 성공');
-    } catch (err) {
-      console.log('collaborator 데이터 캐싱 추가 실패', err);
       throw err;
     }
   };
