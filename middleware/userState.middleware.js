@@ -70,7 +70,7 @@ exports.hasMinimumPermission = (permission) => {
 
       const findMyInvited = invited.find((a) => a.collaborator === userId);
 
-      if (invited.lenth === 0) {
+      if (invited.length <= 0) {
         return res
           .status(400)
           .json({ sucess: false, message: '보드가 없습니다.' });

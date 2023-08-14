@@ -2,7 +2,7 @@ const cache = require('./cacheInit');
 const { BoardGroup, User } = require('./models');
 
 class CollaboratorCaching {
-  // 서버를 켰을때 BoardGroup 전체 데이터 캐싱
+  // 해당 보드 조회시 캐싱
   setCachedCollaborators = async (boardId) => {
     try {
       const collaborators = await BoardGroup.findAll({ where: { boardId } });
@@ -16,34 +16,15 @@ class CollaboratorCaching {
   };
 
   // 초대한 멤버 데이터 캐싱
-  addCachedCollaborator = async (email) => {
+  resetCachedCollaborator = async (boardId) => {
     try {
-      const inviteCollaborator = await BoardGroup.findOne({
-        include: { model: User, where: { email } },
-        raw: true,
+      const inviteCollaborator = await BoardGroup.findAll({
+        where: { boardId },
       });
       cache.set(`cacheKey${inviteCollaborator.boardId}`, inviteCollaborator);
       console.log('collaborator 데이터 캐싱 추가 성공');
     } catch (err) {
       console.log('collaborator 데이터 캐싱 추가 실패', err);
-      throw err;
-    }
-  };
-
-  // 초대된 멤버 퍼미션 수정시
-  modifyCachedCollaborator = async (boardId) => {
-    try {
-      const modifyCachedCollaborator = await BoardGroup.findOne({
-        where: { boardId },
-      });
-
-      cache.set(
-        `cacheKey${modifyCachedCollaborator.boardId}`,
-        modifyCachedCollaborator,
-      );
-      console.log('캐싱된 데이터 수정 성공');
-    } catch (err) {
-      console.log('캐싱된 데이터 수정 실패', err);
       throw err;
     }
   };

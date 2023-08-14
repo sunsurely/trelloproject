@@ -12,7 +12,6 @@ class BoardService {
   boardGroupRepo = new BoardGroupRepository();
   userService = new UserService();
   collaboratorCaching = new CollaboratorCaching();
-
   // 보드 생성
   createBoard = async (userId, name, color, description) => {
     if (isNaN(userId)) {
@@ -87,7 +86,11 @@ class BoardService {
     if (isNaN(userId) || isNaN(boardId)) {
       throw new MakeError(400, '잘못된 형식입니다.');
     }
-    if (await this.collaboratorCaching.getCachedCollaborators(boardId)) {
+
+    const existInvitedData =
+      await this.collaboratorCaching.getCachedCollaborator(boardId);
+
+    if (!existInvitedData || existInvitedData.length <= 0) {
       await this.collaboratorCaching.setCachedCollaborators(boardId);
     }
 
@@ -164,8 +167,7 @@ class BoardService {
       permission,
     );
 
-    await this.collaboratorCaching.addCachedCollaborator(email);
-
+    await this.collaboratorCaching.resetCachedCollaborator(boardId);
     if (!result) {
       throw new MakeError(400, '멤버 초대에 실패하였습니다.');
     }
@@ -199,8 +201,7 @@ class BoardService {
       permission,
     );
 
-    await this.collaboratorCaching.modifyCachedCollaborator(boardId);
-
+    await this.collaboratorCaching.resetCachedCollaborator(boardId);
     if (!result) {
       throw new MakeError(400, '수정이 실패하였습니다.');
     }
